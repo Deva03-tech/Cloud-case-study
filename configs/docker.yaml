@@ -1,0 +1,15 @@
+# Local Docker PostgreSQL, the provisioned stand-in (DECISIONS D, F).
+# Local-only credentials; not secret (DECISIONS L).
+image: postgres:16  # pinned to an exact tag in step 6
+container_name: cloudpaper-pg
+host: localhost
+port: 55432
+user: postgres
+password: postgres
+database: tpch
+# One size at a time. --cpus quota only, no --cpuset-cpus (hybrid CPU, DECISIONS C).
+# shared_buffers = 25% of memory.
+sizes:
+  s1: {cpus: 1, memory_gb: 2, shared_buffers: 512MB}
+  s2: {cpus: 2, memory_gb: 4, shared_buffers: 1GB}
+  s4: {cpus: 4, memory_gb: 8, shared_buffers: 2GB}

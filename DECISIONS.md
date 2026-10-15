@@ -99,3 +99,6 @@ Time-box rule: a task past its budget saves partial results, marks itself "parti
 - 2026-10-16 00:02 IST · Python 3.12.5 instead of 3.11 (owner-approved) · 3.11 not installed; winget per-user install failed; all pinned packages support 3.12. venv at C:\dev\cloud-paper\.venv.
 - 2026-10-16 00:02 IST · RUNBOOK.md and P01_scaffold_data_calibration.md not removed with git rm · They exist neither in the clone nor in the original folder, so there is nothing to remove.
 - 2026-10-16 00:02 IST · Pre-clone copy kept at C:\dev\_preclone_backup (an empty git init plus the two handover files) · Kept instead of deleted, to be safe; it can be removed once the owner confirms.
+- 2026-10-16 00:21 IST · Commits use the existing global git identity (Sahas Reddy Billa, sahasreddybilla07@gmail.com), not Deva03-tech, and no GitHub account linkage is set up (owner instruction) · Owner said everything can be done from Sahas's account and should not be affiliated with any GitHub account.
+- 2026-10-16 00:21 IST · Local Docker PostgreSQL on host port 55432 (configs/docker.yaml) · Avoids clashing with any PostgreSQL already on 5432.
+- 2026-10-16 00:21 IST · data/ and logs/ are wholly git-ignored; empty tracked dirs carry a .gitkeep · TPC-H CSV and Redset are regenerable/downloadable and too large for git.
