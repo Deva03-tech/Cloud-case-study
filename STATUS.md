@@ -1,4 +1,4 @@
-Next check-in: 01:30 IST (full Phase 1 report)
+Next check-in: when owner replies restarted / .env created; full Phase 1 report ~01:30 IST
 
 # STATUS
 
@@ -11,9 +11,9 @@ Phase 1 (bootstrap). Times are IST (UTC+05:30), 2026-10-16.
 | 3 | Power settings, src/common.py | done (owner: plug in, set Power mode Best performance) | 00:30 | 00:46 | 00:32 |
 | 4 | scripts/env_check.py | done (re-run after Docker restart + .env) | 00:32 | 00:42 | 00:32 |
 | 5 | TPC-H data, schema, loader | done (load to Docker/Neon in steps 6/7) | 00:32 | 00:48 | 00:34 |
-| 6 | Docker PostgreSQL sizes + Q6 smoke test | pending | | | |
+| 6 | Docker PostgreSQL sizes + Q6 smoke test | script written; waiting for Docker engine | 00:36 |  |  |
 | 7 | Neon smoke test | blocked: no .env yet | | | |
-| 8 | Redset download (background) | downloading in background (pid 24708) | 00:34 | 00:38 |  |
+| 8 | Redset download (background) | done (307.7 MB, 1.5 min) | 00:34 | 00:38 | 00:36 |
 | 9 | tests/ + commit | done (15 passed) | 00:35 | 00:43 | 00:35 |
 
 ## Errors and blockers
