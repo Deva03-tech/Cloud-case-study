@@ -13,8 +13,8 @@ Phase 1 (bootstrap). Times are IST (UTC+05:30), 2026-10-16.
 | 5 | TPC-H data, schema, loader | done (load to Docker/Neon in steps 6/7) | 00:32 | 00:48 | 00:34 |
 | 6 | Docker PostgreSQL sizes + Q6 smoke test | pending | | | |
 | 7 | Neon smoke test | blocked: no .env yet | | | |
-| 8 | Redset download (background) | in progress | 00:34 |  |  |
-| 9 | tests/ + commit | pending | | | |
+| 8 | Redset download (background) | downloading in background (pid 24708) | 00:34 | 00:38 |  |
+| 9 | tests/ + commit | done (15 passed) | 00:35 | 00:43 | 00:35 |
 
 ## Errors and blockers
 
