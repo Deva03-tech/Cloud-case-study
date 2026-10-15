@@ -95,3 +95,7 @@ Time-box rule: a task past its budget saves partial results, marks itself "parti
 
 ## Claude Code decisions
 <!-- date · choice · reason -->
+- 2026-10-16 00:02 IST · Repo lives at C:\dev\cloud-paper, cloned from https://github.com/Deva03-tech/Cloud-case-study (owner-approved) · Original folder C:\Users\Devaashish\OneDrive\Desktop\Cloud is OneDrive-synced; .git, venv, data (TPC-H, Redset) and lock files must not sync. Originals left untouched there.
+- 2026-10-16 00:02 IST · Python 3.12.5 instead of 3.11 (owner-approved) · 3.11 not installed; winget per-user install failed; all pinned packages support 3.12. venv at C:\dev\cloud-paper\.venv.
+- 2026-10-16 00:02 IST · RUNBOOK.md and P01_scaffold_data_calibration.md not removed with git rm · They exist neither in the clone nor in the original folder, so there is nothing to remove.
+- 2026-10-16 00:02 IST · Pre-clone copy kept at C:\dev\_preclone_backup (an empty git init plus the two handover files) · Kept instead of deleted, to be safe; it can be removed once the owner confirms.
