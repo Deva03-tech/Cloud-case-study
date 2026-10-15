@@ -9,7 +9,7 @@ Phase 1 (bootstrap). Times are IST (UTC+05:30), 2026-10-16.
 | 1 | Repo hygiene and layout | done | 00:21 | 00:31 | 00:24 |
 | 2 | Python venv, requirements, .wslconfig | done (WSL/Docker restart pending) | 00:25 | 00:37 | 00:30 |
 | 3 | Power settings, src/common.py | done (owner: plug in, set Power mode Best performance) | 00:30 | 00:46 | 00:32 |
-| 4 | scripts/env_check.py | re-run 00:54: 8/9 pass (Neon pending .env) | 00:32 | 00:42 | 00:32 |
+| 4 | scripts/env_check.py | re-run 00:54: 6/9 pass (on battery 84%, AC power mode, Neon .env) | 00:32 | 00:42 | 00:32 |
 | 5 | TPC-H data, schema, loader | done (load to Docker/Neon in steps 6/7) | 00:32 | 00:48 | 00:34 |
 | 6 | Docker PostgreSQL sizes + Q6 smoke test | done (Q6 warm 0.169/0.099/0.064 s at 1/2/4 vCPU) | 00:36 | 01:07 | 00:53 |
 | 7 | Neon smoke test | script ready; blocked: .env is 0 bytes (unsaved) | 00:53 |  |  |
@@ -19,6 +19,7 @@ Phase 1 (bootstrap). Times are IST (UTC+05:30), 2026-10-16.
 ## Errors and blockers
 
 - `.env` exists but is 0 bytes (00:52); owner asked to save it. Blocks step 7.
+- 00:54: Windows reports on battery (84%, was 100% at 00:32) and AC power mode = Best power efficiency, despite owner saying plugged in + Best performance.
 
 ## Free-tier usage
 
