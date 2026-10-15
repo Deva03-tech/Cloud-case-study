@@ -102,3 +102,5 @@ Time-box rule: a task past its budget saves partial results, marks itself "parti
 - 2026-10-16 00:21 IST · Commits use the existing global git identity (Sahas Reddy Billa, sahasreddybilla07@gmail.com), not Deva03-tech, and no GitHub account linkage is set up (owner instruction) · Owner said everything can be done from Sahas's account and should not be affiliated with any GitHub account.
 - 2026-10-16 00:21 IST · Local Docker PostgreSQL on host port 55432 (configs/docker.yaml) · Avoids clashing with any PostgreSQL already on 5432.
 - 2026-10-16 00:21 IST · data/ and logs/ are wholly git-ignored; empty tracked dirs carry a .gitkeep · TPC-H CSV and Redset are regenerable/downloadable and too large for git.
+- 2026-10-16 00:30 IST · requirements.txt is a full `pip freeze` (all transitive deps pinned), latest versions available on 2026-10-16 · Reproducible install; versions picked by pip, all have cp312 Windows wheels.
+- 2026-10-16 00:30 IST · %UserProfile%\.wslconfig created (did not exist): [wsl2] memory=20GB, processors=12, swap=4GB · Per DECISIONS C; requires wsl --shutdown + Docker Desktop restart to apply.

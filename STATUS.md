@@ -1,4 +1,4 @@
-Next check-in: when the owner replies about .env (blocks step 7 only)
+Next check-in: when the owner confirms the WSL/Docker restart (blocks step 2 sign-off)
 
 # STATUS
 
@@ -6,8 +6,8 @@ Phase 1 (bootstrap). Times are IST (UTC+05:30), 2026-10-16.
 
 | # | Task | Status | Start | ETA | Finished |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Repo hygiene and layout | done | 00:21 | 00:31 | |
-| 2 | Python venv, requirements, .wslconfig | pending | | | |
+| 1 | Repo hygiene and layout | done | 00:21 | 00:31 | 00:24 |
+| 2 | Python venv, requirements, .wslconfig | done (waiting: WSL/Docker restart) | 00:25 | 00:37 | 00:31 |
 | 3 | Power settings, src/common.py | pending | | | |
 | 4 | scripts/env_check.py | pending | | | |
 | 5 | TPC-H data, schema, loader | pending | | | |
@@ -19,6 +19,7 @@ Phase 1 (bootstrap). Times are IST (UTC+05:30), 2026-10-16.
 ## Errors and blockers
 
 - `.env` not found in the OneDrive project folder; owner asked where it is. Needed for step 7.
+- Docker Desktop engine not reachable at 00:30 (npipe dockerDesktopLinuxEngine missing). New .wslconfig needs wsl --shutdown + Docker Desktop restart.
 
 ## Free-tier usage
 
