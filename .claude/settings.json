@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": ["Bash(python:*)", "Bash(py:*)", "Bash(pip:*)", "Bash(docker:*)", "Bash(git:*)",
+              "Bash(duckdb:*)", "Bash(powershell:*)", "Bash(powercfg:*)", "Bash(wsl:*)",
+              "Bash(pdflatex:*)", "Bash(latexmk:*)", "Edit", "Write", "Read"],
+    "deny":  ["Read(.env)"]
+  }
+}
