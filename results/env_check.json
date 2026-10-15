@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "env_check",
-    "git_commit": "29a0da176df023529e20b5a2efa79fb7e1bc295f-dirty",
+    "git_commit": "db84c9c26c11a2081e48df223e3760b968bd94b8",
     "host": {
       "hostname": "Devaashish",
       "os": "Windows-11-10.0.26200-SP0",
@@ -9,8 +9,8 @@
       "cpu": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
       "logical_cpus": 14
     },
-    "utc": "2026-10-15T19:02:48+00:00",
-    "ist": "2026-10-16T00:32:48+05:30",
+    "utc": "2026-10-15T19:24:43+00:00",
+    "ist": "2026-10-16T00:54:43+05:30",
     "settings": {
       "checks": [
         "Python 3.12",
@@ -65,9 +65,9 @@
     },
     "AC power": {
       "pass": false,
-      "detail": "NO (on battery), charge 100%",
+      "detail": "NO (on battery), charge 84%",
       "BatteryStatus": 1,
-      "EstimatedChargeRemaining": 100
+      "EstimatedChargeRemaining": 84
     },
     ".wslconfig": {
       "pass": true,
@@ -77,14 +77,16 @@
       "swap": "4GB"
     },
     "Docker / WSL2": {
-      "pass": false,
-      "detail": "engine not reachable",
-      "stderr": "failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified."
+      "pass": true,
+      "detail": "server 29.5.3; WSL2 sees 12 CPUs, 19.5 GB",
+      "server_version": "29.5.3",
+      "ncpu": 12,
+      "mem_gb": 19.53
     },
     "Disk": {
       "pass": true,
-      "detail": "C: 461.0 GB free (stop line 60)",
-      "c_free_gb": 461.0
+      "detail": "C: 461.8 GB free (stop line 60)",
+      "c_free_gb": 461.8
     },
     "Neon": {
       "pass": false,
