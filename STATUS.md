@@ -10,10 +10,10 @@ Phase 1 (bootstrap). Times are IST (UTC+05:30), 2026-10-16.
 | 2 | Python venv, requirements, .wslconfig | done (WSL/Docker restart pending) | 00:25 | 00:37 | 00:30 |
 | 3 | Power settings, src/common.py | done (owner: plug in, set Power mode Best performance) | 00:30 | 00:46 | 00:32 |
 | 4 | scripts/env_check.py | done (re-run after Docker restart + .env) | 00:32 | 00:42 | 00:32 |
-| 5 | TPC-H data, schema, loader | in progress | 00:32 |  |  |
+| 5 | TPC-H data, schema, loader | done (load to Docker/Neon in steps 6/7) | 00:32 | 00:48 | 00:34 |
 | 6 | Docker PostgreSQL sizes + Q6 smoke test | pending | | | |
 | 7 | Neon smoke test | blocked: no .env yet | | | |
-| 8 | Redset download (background) | pending | | | |
+| 8 | Redset download (background) | in progress | 00:34 |  |  |
 | 9 | tests/ + commit | pending | | | |
 
 ## Errors and blockers

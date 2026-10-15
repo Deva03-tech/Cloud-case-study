@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "name": "tpch_sf0.1_gen",
+    "git_commit": "3b0fa8263d677664986e155b541505a02e4f6c92",
+    "host": {
+      "hostname": "Devaashish",
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.12.5",
+      "cpu": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+      "logical_cpus": 14
+    },
+    "utc": "2026-10-15T19:03:20+00:00",
+    "ist": "2026-10-16T00:33:20+05:30",
+    "settings": {
+      "sf": 0.1,
+      "duckdb": "1.5.6",
+      "out_dir": "C:\\dev\\cloud-paper\\data\\tpch_sf0.1"
+    }
+  },
+  "data": {
+    "rows": {
+      "region": 5,
+      "nation": 25,
+      "supplier": 1000,
+      "customer": 15000,
+      "part": 20000,
+      "partsupp": 80000,
+      "orders": 150000,
+      "lineitem": 600572
+    },
+    "csv_bytes": {
+      "region": 415,
+      "nation": 2252,
+      "supplier": 141648,
+      "customer": 2457922,
+      "part": 2452948,
+      "partsupp": 11706886,
+      "orders": 17093313,
+      "lineitem": 75561176
+    },
+    "csv_total_mb": 104.35,
+    "dbgen_s": 2.28,
+    "export_s": 0.77,
+    "queries_written": [
+      "q01.sql",
+      "q03.sql",
+      "q04.sql",
+      "q05.sql",
+      "q06.sql",
+      "q10.sql",
+      "q12.sql",
+      "q14.sql"
+    ]
+  }
+}
