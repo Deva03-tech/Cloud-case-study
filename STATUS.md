@@ -11,16 +11,14 @@ Phase 1 (bootstrap). Times are IST (UTC+05:30), 2026-10-16.
 | 3 | Power settings, src/common.py | done (owner: plug in, set Power mode Best performance) | 00:30 | 00:46 | 00:32 |
 | 4 | scripts/env_check.py | done (re-run after Docker restart + .env) | 00:32 | 00:42 | 00:32 |
 | 5 | TPC-H data, schema, loader | done (load to Docker/Neon in steps 6/7) | 00:32 | 00:48 | 00:34 |
-| 6 | Docker PostgreSQL sizes + Q6 smoke test | script written; waiting for Docker engine | 00:36 |  |  |
-| 7 | Neon smoke test | blocked: no .env yet | | | |
+| 6 | Docker PostgreSQL sizes + Q6 smoke test | done (Q6 warm 0.169/0.099/0.064 s at 1/2/4 vCPU) | 00:36 | 01:07 | 00:53 |
+| 7 | Neon smoke test | blocked: .env is 0 bytes (unsaved) |  |  |  |
 | 8 | Redset download (background) | done (307.7 MB, 1.5 min) | 00:34 | 00:38 | 00:36 |
 | 9 | tests/ + commit | done (15 passed) | 00:35 | 00:43 | 00:35 |
 
 ## Errors and blockers
 
-- `.env` not found in the OneDrive project folder; owner asked where it is. Needed for step 7.
-- Docker Desktop engine not reachable at 00:30 (npipe dockerDesktopLinuxEngine missing). New .wslconfig needs wsl --shutdown + Docker Desktop restart.
-- Laptop on battery (00:32); AC power mode overlay is "Best power efficiency". Owner to plug in and set Settings › Power mode = Best performance.
+- `.env` exists but is 0 bytes (00:52); owner asked to save it. Blocks step 7.
 
 ## Free-tier usage
 

@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "name": "load_docker_sf0.1",
+    "git_commit": "caddb32f6e89b81138e19a188f859eeb006725e2-dirty",
+    "host": {
+      "hostname": "Devaashish",
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.12.5",
+      "cpu": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+      "logical_cpus": 14
+    },
+    "utc": "2026-10-15T19:22:58+00:00",
+    "ist": "2026-10-16T00:52:58+05:30",
+    "settings": {
+      "target": "docker",
+      "sf": 0.1,
+      "neon_max_gb": 0.4
+    }
+  },
+  "data": {
+    "db_bytes": 175522319,
+    "db_mb": 167.4,
+    "rows": {
+      "region": 5,
+      "nation": 25,
+      "supplier": 1000,
+      "customer": 15000,
+      "part": 20000,
+      "partsupp": 80000,
+      "orders": 150000,
+      "lineitem": 600572
+    },
+    "server_version": "16.15 (Debian 16.15-1.pgdg13+2)",
+    "within_limit": true,
+    "schema_s": 0.03,
+    "copy_s": 3.9,
+    "keys_s": 1.76,
+    "analyze_s": 2.0
+  }
+}

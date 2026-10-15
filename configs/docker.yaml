@@ -1,6 +1,6 @@
 # Local Docker PostgreSQL, the provisioned stand-in (DECISIONS D, F).
 # Local-only credentials; not secret (DECISIONS L).
-image: postgres:16  # pinned to an exact tag in step 6
+image: postgres:16.15  # = postgres@sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d (pulled 2026-10-16)
 container_name: cloudpaper-pg
 host: localhost
 port: 55432

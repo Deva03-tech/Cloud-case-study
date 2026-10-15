@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "name": "docker_smoke",
+    "git_commit": "caddb32f6e89b81138e19a188f859eeb006725e2-dirty",
+    "host": {
+      "hostname": "Devaashish",
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.12.5",
+      "cpu": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+      "logical_cpus": 14
+    },
+    "utc": "2026-10-15T19:23:24+00:00",
+    "ist": "2026-10-16T00:53:24+05:30",
+    "settings": {
+      "image": "postgres:16.15",
+      "image_id": "sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d",
+      "reps": 3,
+      "query": "q06",
+      "note": "smoke test only; calibration in Phase 2"
+    }
+  },
+  "data": {
+    "s1": {
+      "size": "s1",
+      "cpus": 1,
+      "memory_gb": 2,
+      "shared_buffers": "512MB",
+      "applied": {
+        "cpus": 1.0,
+        "memory_gb": 2.0
+      },
+      "ready_s": 1.69,
+      "cold_restart_ready_s": 1.35,
+      "q6_cold_s": 0.5074,
+      "q6_warm_s": [
+        0.1677,
+        0.1779,
+        0.1689
+      ],
+      "q6_warm_median_s": 0.1689
+    },
+    "s2": {
+      "size": "s2",
+      "cpus": 2,
+      "memory_gb": 4,
+      "shared_buffers": "1GB",
+      "applied": {
+        "cpus": 2.0,
+        "memory_gb": 4.0
+      },
+      "ready_s": 0.88,
+      "cold_restart_ready_s": 1.14,
+      "q6_cold_s": 0.2859,
+      "q6_warm_s": [
+        0.0965,
+        0.0993,
+        0.1259
+      ],
+      "q6_warm_median_s": 0.0993
+    },
+    "s4": {
+      "size": "s4",
+      "cpus": 4,
+      "memory_gb": 8,
+      "shared_buffers": "2GB",
+      "applied": {
+        "cpus": 4.0,
+        "memory_gb": 8.0
+      },
+      "ready_s": 0.88,
+      "cold_restart_ready_s": 1.11,
+      "q6_cold_s": 0.2114,
+      "q6_warm_s": [
+        0.0638,
+        0.0638,
+        0.0803
+      ],
+      "q6_warm_median_s": 0.0638
+    }
+  }
+}
