@@ -1,0 +1,34 @@
+# List prices, us-east-1, read 2026-10-16 (IST). Compute only; storage and I/O excluded
+# (identical data size across options). Sensitivity: +-30% (DECISIONS D).
+# Capacity equivalence (modelled, not measured): 1 vCPU-equivalent = 1 Docker vCPU
+# = 1 Neon CU (Neon: 1 CU = 1 vCPU + 4 GB) = 2 Aurora ACU (1 ACU ~ 2 GiB; 4 GiB per vCPU as in m7g).
+aurora_serverless_v2:
+  usd_per_acu_hour: 0.12
+  acu_per_vcpu_eq: 2.0
+  min_acu_active: 0.5
+  resume_s: 15.0
+  min_auto_pause_s: 300
+  billing: per second while not paused
+  sources:
+    - {what: "price, Aurora Standard, US East (N. Virginia)", url: "https://aws.amazon.com/rds/aurora/pricing/", accessed: "2026-10-16"}
+    - {what: "resume ~15 s, auto-pause interval 300 s min/default, 86,400 s max", url: "https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2-auto-pause.html", accessed: "2026-10-16"}
+neon_launch:
+  usd_per_cu_hour: 0.106
+  cu_per_vcpu_eq: 1.0
+  min_cu_active: 0.25
+  billing: per CU-hour, suspended compute accrues nothing
+  sources:
+    - {what: "Launch plan compute price; suspend after 5 min (can be disabled)", url: "https://neon.com/pricing", accessed: "2026-10-16"}
+neon_scale:
+  usd_per_cu_hour: 0.222
+  cu_per_vcpu_eq: 1.0
+  sources:
+    - {what: "Scale plan compute price; scale-to-zero 1 min to always on", url: "https://neon.com/pricing", accessed: "2026-10-16"}
+rds_postgresql:
+  # db.m7g.large: 2 vCPU, 8 GiB, on-demand Single-AZ. Priced linearly per vCPU across the m7g family.
+  usd_per_hour_db_m7g_large: 0.168
+  vcpu_db_m7g_large: 2
+  usd_per_vcpu_hour: 0.084
+  sources:
+    - {what: "db.m7g.large on-demand $0.168/h (third-party mirror of the AWS price list; AWS page tables did not render)", url: "https://instances.vantage.sh/aws/rds/db.m7g.large", accessed: "2026-10-16"}
+    - {what: "official page (tables collapsed)", url: "https://aws.amazon.com/rds/postgresql/pricing/", accessed: "2026-10-16"}

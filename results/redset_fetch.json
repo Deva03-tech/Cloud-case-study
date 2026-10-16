@@ -1,0 +1,26 @@
+{
+  "meta": {
+    "name": "redset_fetch",
+    "git_commit": "09a5d673dde5b962b0c6b0ef3a5dd7a19c225f2a",
+    "host": {
+      "host": "Dell G15",
+      "hostname": "DESKTOP-9RMGOEA",
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.13.7",
+      "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+      "logical_cpus": 16
+    },
+    "utc": "2026-10-16T05:25:03+00:00",
+    "ist": "2026-10-16T10:55:03+05:30",
+    "settings": {
+      "url": "https://s3.amazonaws.com/redshift-downloads/redset/serverless/full.parquet",
+      "licence": "CC BY-NC 4.0"
+    }
+  },
+  "data": {
+    "file": "data\\redset\\serverless_full.parquet",
+    "bytes": 322619676,
+    "sha256": "577c4c7a9a5d0773aa5b771e7c9984db3bdacc1d484960ec478851e513fdca6d",
+    "seconds": 161.3
+  }
+}
