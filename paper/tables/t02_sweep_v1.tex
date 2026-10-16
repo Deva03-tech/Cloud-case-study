@@ -1,0 +1,55 @@
+\begin{table}[htbp]
+\centering
+\tiny\renewcommand{\arraystretch}{0.85}
+\caption{Synthetic burst sweep, sim v1 (means over 10 seeds; latency not validated). p95 target 0.5 s. Source: \texttt{results/sweep.parquet}, \texttt{results/sweep.json}.}
+\label{tab:sweepv1}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lllrrrrrr}
+\toprule
+\textbf{intensity} & \textbf{gap} & \textbf{policy} & \textbf{p95} & \textbf{p99} & \textbf{cost1k} & \textbf{vcpu\_s} & \textbf{cold} & \textbf{meets\_p95} \\
+\midrule
+high & long & P-peak & 0.1027 & 0.1199 & 0.0358 & 4.32e+04 & 0.0 & 1.0 \\
+high & long & P-mean & 61.8166 & 69.2862 & 0.009 & 1.08e+04 & 0.0 & 0.0 \\
+high & long & P-sched & 0.1027 & 0.1199 & 0.0148 & 1.782e+04 & 0.0 & 1.0 \\
+high & long & S-default & 9.792 & 17.457 & 0.0208 & 8760.2327 & 7.0 & 0.0 \\
+high & long & S-tuned & 0.176 & 1.8969 & 0.025 & 1.056e+04 & 0.0 & 1.0 \\
+high & long & S-floor & 0.176 & 1.8969 & 0.025 & 1.056e+04 & 0.0 & 1.0 \\
+high & long & S-prewarm & 0.1856 & 4.495 & 0.0213 & 8985.8638 & 1.0 & 1.0 \\
+high & short & P-peak & 0.1027 & 0.1199 & 0.0124 & 4.32e+04 & 0.0 & 1.0 \\
+high & short & P-mean & 0.1853 & 0.2187 & 0.0062 & 2.16e+04 & 0.0 & 1.0 \\
+high & short & P-sched & 0.1027 & 0.1199 & 0.0089 & 3.114e+04 & 0.0 & 1.0 \\
+high & short & S-default & 0.1655 & 1.4152 & 0.0214 & 2.608e+04 & 0.0 & 1.0 \\
+high & short & S-tuned & 0.1655 & 1.4152 & 0.0214 & 2.608e+04 & 0.0 & 1.0 \\
+high & short & S-floor & 0.1655 & 1.4152 & 0.0214 & 2.608e+04 & 0.0 & 1.0 \\
+high & short & S-prewarm & 0.1655 & 1.4152 & 0.0214 & 2.608e+04 & 0.0 & 1.0 \\
+low & long & P-peak & 0.1033 & 0.1199 & 0.4281 & 4.32e+04 & 0.0 & 1.0 \\
+low & long & P-mean & 0.3749 & 0.4242 & 0.107 & 1.08e+04 & 0.0 & 1.0 \\
+low & long & P-sched & 0.1033 & 0.1199 & 0.1766 & 1.782e+04 & 0.0 & 1.0 \\
+low & long & S-default & 3.0002 & 14.3423 & 0.1163 & 4106.3317 & 7.0 & 0.0 \\
+low & long & S-tuned & 0.3737 & 0.476 & 0.163 & 5757.525 & 0.0 & 1.0 \\
+low & long & S-floor & 0.3737 & 0.476 & 0.163 & 5757.525 & 0.0 & 1.0 \\
+low & long & S-prewarm & 0.3764 & 1.755 & 0.1198 & 4229.6753 & 1.0 & 1.0 \\
+low & short & P-peak & 0.1015 & 0.1199 & 0.1487 & 4.32e+04 & 0.0 & 1.0 \\
+low & short & P-mean & 0.3749 & 0.4235 & 0.0372 & 1.08e+04 & 0.0 & 1.0 \\
+low & short & P-sched & 0.1015 & 0.1199 & 0.1072 & 3.114e+04 & 0.0 & 1.0 \\
+low & short & S-default & 0.3736 & 0.4795 & 0.1144 & 1.164e+04 & 0.0 & 1.0 \\
+low & short & S-tuned & 0.3736 & 0.4795 & 0.1144 & 1.164e+04 & 0.0 & 1.0 \\
+low & short & S-floor & 0.3736 & 0.4795 & 0.1144 & 1.164e+04 & 0.0 & 1.0 \\
+low & short & S-prewarm & 0.3736 & 0.4795 & 0.1144 & 1.164e+04 & 0.0 & 1.0 \\
+mid & long & P-peak & 0.1027 & 0.1199 & 0.108 & 4.32e+04 & 0.0 & 1.0 \\
+mid & long & P-mean & 0.5027 & 0.7767 & 0.027 & 1.08e+04 & 0.0 & 0.4 \\
+mid & long & P-sched & 0.1027 & 0.1199 & 0.0445 & 1.782e+04 & 0.0 & 1.0 \\
+mid & long & S-default & 5.0736 & 15.1834 & 0.0428 & 5993.8323 & 7.0 & 0.0 \\
+mid & long & S-tuned & 0.1867 & 0.4437 & 0.0553 & 7746.05 & 0.0 & 1.0 \\
+mid & long & S-floor & 0.1867 & 0.4437 & 0.0553 & 7746.05 & 0.0 & 1.0 \\
+mid & long & S-prewarm & 0.2003 & 1.7573 & 0.0441 & 6183.5006 & 1.0 & 1.0 \\
+mid & short & P-peak & 0.1033 & 0.1199 & 0.0372 & 4.32e+04 & 0.0 & 1.0 \\
+mid & short & P-mean & 0.5072 & 0.7725 & 0.0093 & 1.08e+04 & 0.0 & 0.3 \\
+mid & short & P-sched & 0.1033 & 0.1199 & 0.0268 & 3.114e+04 & 0.0 & 1.0 \\
+mid & short & S-default & 0.1867 & 0.45 & 0.0429 & 1.744e+04 & 0.0 & 1.0 \\
+mid & short & S-tuned & 0.1867 & 0.45 & 0.0429 & 1.744e+04 & 0.0 & 1.0 \\
+mid & short & S-floor & 0.1867 & 0.45 & 0.0429 & 1.744e+04 & 0.0 & 1.0 \\
+mid & short & S-prewarm & 0.1867 & 0.45 & 0.0429 & 1.744e+04 & 0.0 & 1.0 \\
+\botrule
+\end{tabular}
+\end{table}

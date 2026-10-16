@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Validation v2 on a new trace (seed 9191); 61 real queries failed (DiskFull). Source: \texttt{results/validation\_v2.json}.}
+\label{tab:valv2}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrlrrll}
+\toprule
+\textbf{sim} & \textbf{p95 real} & \textbf{p95 sim} & \textbf{p95 err} & \textbf{CPU-s real} & \textbf{CPU-s sim} & \textbf{CPU-s err} & \textbf{pass} \\
+\midrule
+v1 & 1.6225 & 0.1864 & -88.5\% & 634.5695 & 291.48 & -54.1\% & no \\
+v2 & 1.6225 & 2.1838 & +34.6\% & 634.5695 & 625.8179 & -1.4\% & no \\
+\botrule
+\end{tabular}
+\end{table}

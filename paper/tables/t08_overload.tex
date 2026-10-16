@@ -1,0 +1,23 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Redset P-mean overload check. Source: \texttt{results/redset\_overload\_check.json}.}
+\label{tab:overload}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{ll}
+\toprule
+\textbf{quantity} & \textbf{value} \\
+\midrule
+P-mean size (vCPU) / servers & 1.0 / 1 \\
+capacity (q/s) & 9.94 \\
+rho, day mean & 0.033 \\
+rho, peak hour (22) & 0.799 \\
+rho, max minute & 3.04 \\
+minutes with rho > 1 & 21 \\
+max fluid backlog (queries) & 14344.0 \\
+backlog drain (s) & 1442.3 \\
+queue unbounded in overload minutes & True \\
+sim v1 P-mean p95 (s) & 1416.9 \\
+\botrule
+\end{tabular}
+\end{table}

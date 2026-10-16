@@ -1,0 +1,17 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Concurrency calibration (closed loop, 120 s per level) and fit latency $= b_q \max(1, a n / c)$: $a=2.584$, $R^2=0.956$, CPU per base second 2.147. Source: \texttt{results/calib\_contention.json}.}
+\label{tab:contention}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrrrrrr}
+\toprule
+\textbf{size} & \textbf{n} & \textbf{completed} & \textbf{errors} & \textbf{CPU-s} & \textbf{ratio} & \textbf{pred} & \textbf{resid} \\
+\midrule
+s2 & 1 & 2158 & 0 & 229.72 & 1.0 & 1.292 & -0.292 \\
+s2 & 2 & 2277 & 0 & 240.282 & 1.91 & 2.584 & -0.674 \\
+s2 & 4 & 2001 & 3 & 240.542 & 4.398 & 5.168 & -0.77 \\
+s2 & 8 & 1511 & 22 & 241.01 & 10.927 & 10.336 & 0.591 \\
+\botrule
+\end{tabular}
+\end{table}

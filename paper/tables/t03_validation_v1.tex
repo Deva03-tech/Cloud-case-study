@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Validation v1: sim v1 vs a real 10-min Docker s2 replay (trace seed 4242); frozen bands 25\% (p95) and 20\% (CPU-s). Source: \texttt{results/validation.json}.}
+\label{tab:valv1}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrll}
+\toprule
+\textbf{metric} & \textbf{real} & \textbf{sim v1} & \textbf{error} & \textbf{pass} \\
+\midrule
+p95 latency (s) & 2.3358 & 0.1859 & -92.0\% & no \\
+CPU-seconds & 654.7649 & 296.2695 & -54.8\% & no \\
+\botrule
+\end{tabular}
+\end{table}

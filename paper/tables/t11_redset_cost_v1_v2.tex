@@ -1,0 +1,20 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Redset cost per 1,000 queries, sim v1 vs sim v2; S-tuned $\tau$ (v2) = 300 s. Source: \texttt{results/redset\_sweep.json}, \texttt{results/redset\_sweep\_v2.json}.}
+\label{tab:redsetcost}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{policy} & \textbf{cost1k v1} & \textbf{cost1k v2} & \textbf{/P-peak v1} & \textbf{/P-peak v2} & \textbf{p95 v2 (NV)} \\
+\midrule
+P-peak & 0.2818 & 0.2818 & 1.0 & 1.0 & 0.2594 \\
+P-mean & 0.0705 & 0.0705 & 0.25 & 0.25 & 5754.1977 \\
+P-sched & 0.0793 & 0.0793 & 0.281 & 0.281 & 0.2594 \\
+S-default & 0.0126 & 0.0139 & 0.045 & 0.049 & 10.7539 \\
+S-tuned & 0.012 & 0.0139 & 0.043 & 0.049 & 10.7539 \\
+S-floor & 0.0618 & 0.0628 & 0.219 & 0.223 & 0.2656 \\
+S-prewarm & 0.0126 & 0.0139 & 0.045 & 0.049 & 10.7539 \\
+\botrule
+\end{tabular}
+\end{table}

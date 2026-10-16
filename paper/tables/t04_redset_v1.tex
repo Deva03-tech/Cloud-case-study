@@ -1,0 +1,20 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Redset replay, sim v1 (instance 1, 2024-04-10, 28615 queries; means over 10 seeds; latency not validated). Source: \texttt{results/redset\_sweep.json}, \texttt{results/redset\_trace.json}.}
+\label{tab:redsetv1}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{policy} & \textbf{p95\_s} & \textbf{p99\_s} & \textbf{compute\_vcpu\_s} & \textbf{cost\_per\_1k\_usd} & \textbf{cold\_starts} \\
+\midrule
+P-peak & 0.1047 & 0.1199 & 3.456e+05 & 0.2818 & 0.0 \\
+P-mean & 1416.9298 & 1495.5244 & 8.64e+04 & 0.0705 & 0.0 \\
+P-sched & 0.1047 & 0.1199 & 9.72e+04 & 0.0793 & 0.0 \\
+S-default & 0.1152 & 0.1553 & 5393.8394 & 0.0126 & 1.0 \\
+S-tuned & 0.1152 & 0.1553 & 5152.9394 & 0.012 & 1.0 \\
+S-floor & 0.1116 & 0.142 & 2.651e+04 & 0.0618 & 0.0 \\
+S-prewarm & 0.1152 & 0.1553 & 5393.8394 & 0.0126 & 1.0 \\
+\botrule
+\end{tabular}
+\end{table}
