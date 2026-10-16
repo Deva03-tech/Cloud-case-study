@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "name": "load_docker_sf0.1",
+    "git_commit": "77ff83059cafbc02edbb535145c44009d6f4781d",
+    "host": {
+      "host": "Dell G15",
+      "hostname": "DESKTOP-9RMGOEA",
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.13.7",
+      "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+      "logical_cpus": 16
+    },
+    "utc": "2026-10-16T05:20:59+00:00",
+    "ist": "2026-10-16T10:50:59+05:30",
+    "settings": {
+      "target": "docker",
+      "sf": 0.1,
+      "neon_max_gb": 0.4
+    }
+  },
+  "data": {
+    "db_bytes": 175522319,
+    "db_mb": 167.4,
+    "rows": {
+      "region": 5,
+      "nation": 25,
+      "supplier": 1000,
+      "customer": 15000,
+      "part": 20000,
+      "partsupp": 80000,
+      "orders": 150000,
+      "lineitem": 600572
+    },
+    "server_version": "16.15 (Debian 16.15-1.pgdg13+2)",
+    "within_limit": true,
+    "schema_s": 0.01,
+    "copy_s": 1.72,
+    "keys_s": 0.56,
+    "analyze_s": 0.62
+  }
+}
