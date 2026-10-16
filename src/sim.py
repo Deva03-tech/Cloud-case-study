@@ -174,9 +174,11 @@ class _State:
 
 
 def simulate(policy: Policy, wl: Workload, sm: ServiceModel, seed: int,
-             rtt_s: float = 0.0, keep_latencies: bool = False) -> dict:
+             rtt_s: float = 0.0, keep_latencies: bool = False,
+             trace: list[tuple[float, str]] | None = None) -> dict:
+    """trace: fixed (time, query) arrivals (validation replay); default draws from wl."""
     rng = np.random.default_rng(seed)
-    arr = arrivals(wl, sm.queries, np.random.default_rng(seed + 10_000))
+    arr = trace if trace is not None else arrivals(wl, sm.queries, np.random.default_rng(seed + 10_000))
     env = simpy.Environment()
     serverless = policy.kind == "serverless"
     bursts = wl.bursts()
