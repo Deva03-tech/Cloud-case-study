@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "name": "stats",
+    "git_commit": "73844e1fa68557a75b925a898fc5402e4c61def4",
+    "host": {
+      "host": "Dell G15",
+      "hostname": "DESKTOP-9RMGOEA",
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.13.7",
+      "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+      "logical_cpus": 16
+    },
+    "utc": "2026-10-16T05:43:00+00:00",
+    "ist": "2026-10-16T11:13:00+05:30",
+    "settings": {
+      "metrics": [
+        "p50_s",
+        "p95_s",
+        "p99_s",
+        "compute_vcpu_s",
+        "cost_per_1k_usd",
+        "cold_starts"
+      ],
+      "bootstrap": 10000,
+      "ci": 0.95,
+      "test": "Wilcoxon signed-rank, two-sided, paired by seed, vs P-peak"
+    }
+  },
+  "data": {
+    "rows": 294,
+    "file": "results/stats.csv",
+    "sources": [
+      "redset",
+      "sweep"
+    ]
+  }
+}

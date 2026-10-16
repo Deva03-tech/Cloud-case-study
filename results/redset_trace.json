@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "name": "redset_trace",
+    "git_commit": "73844e1fa68557a75b925a898fc5402e4c61def4",
+    "host": {
+      "host": "Dell G15",
+      "hostname": "DESKTOP-9RMGOEA",
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.13.7",
+      "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+      "logical_cpus": 16
+    },
+    "utc": "2026-10-16T05:42:40+00:00",
+    "ist": "2026-10-16T11:12:40+05:30",
+    "settings": {
+      "file": "serverless_full.parquet",
+      "min_q": 2000,
+      "max_q": 60000,
+      "rule": "max CV of hourly counts among instance-days in range",
+      "license": "CC BY-NC 4.0"
+    }
+  },
+  "data": {
+    "instance_id": 1,
+    "day": "2024-04-10",
+    "n_queries": 28615,
+    "hourly_cv": 4.898979485566357,
+    "hourly_counts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      28615,
+      0
+    ],
+    "candidates": 696
+  }
+}

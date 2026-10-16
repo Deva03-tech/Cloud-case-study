@@ -1,4 +1,4 @@
-Next check-in: 11:35 IST (Tier 4 report)
+Next check-in: 11:45 IST (Tier 5 release)
 
 # STATUS
 
@@ -11,7 +11,7 @@ Phase 1 (HP) history: see git log at aee62b5; HP results in results/hp_bootstrap
 | T1 | TPC-H SF0.1 + Docker calibration (+ Neon if .env) | done, Docker only (no .env) | 10:51 | 11:20 | 10:54 |
 | T2 | Simulator, cost model, policies, tests, sweep (Docker-only mode) | done (600 runs, 47 s) | 10:54 | 11:35 | 11:00 |
 | T3 | Validation: sim vs real Docker s2 10-min replay | done: FAIL (p95 −92 %, CPU-s −55 %) | 11:00 | 11:25 | 11:12 |
-| T4 | Stats, Redset, figures | running | 11:13 | 11:35 |  |
+| T4 | Stats, Redset, figures | done | 11:13 | 11:35 | 11:14 |
 | T5 | RESULTS.md, release | pending |  | 12:45 |  |
 
 ## Errors and blockers

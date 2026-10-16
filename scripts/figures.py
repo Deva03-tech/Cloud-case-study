@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 
 import matplotlib
+import matplotlib.ticker
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
@@ -61,18 +62,23 @@ def fig_latency_cdf() -> list[str]:
                 ax.plot(x, np.arange(1, len(x) + 1) / len(x), ls(p), color=COLORS[p], label=p, lw=1.1)
         ax.set_xscale("log")
         ax.axvline(0.5, color="#5f5e5a", lw=0.7, ls=":")
-        ax.set_title(f"mid rate (4 q/s), {gap} gap ({'180' if gap == 'short' else '1200'} s)")
+        ax.set_title(f"{gap} gap ({'180' if gap == 'short' else '1200'} s)")
         ax.set_xlabel("End-to-end latency (s)")
+        ax.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
     axes[0].set_ylabel("CDF (seed 0)")
     axes[0].set_ylim(0.8, 1.001)
     axes[1].legend(loc="lower right", frameon=False, ncol=1)
+    fig.suptitle("Mid burst rate (4 q/s), seed 0", fontsize=7.5, y=1.02)
+    fig.text(0.5, -0.2, "P-peak and P-sched coincide during bursts (P-sched drawn on top);\n"
+             "S-tuned = S-default (short gap) / S-floor (long gap); dotted: p95 target 0.5 s",
+             ha="center", va="top", fontsize=5, color="#5f5e5a")
     return save(fig, "latency_cdf")
 
 
 def fig_pareto() -> list[str]:
     sw = pd.read_parquet(R / "sweep.parquet")
     m = sw[~sw.aux].groupby(["intensity", "gap", "policy"])[["p95_s", "cost_per_1k_usd"]].mean().reset_index()
-    fig, axes = plt.subplots(1, 2, figsize=(W, 2.0), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(W, 2.0), sharey=True, sharex=True)
     sizes = {"low": 10, "mid": 22, "high": 40}
     for ax, gap in zip(axes, ["short", "long"]):
         d = m[m.gap == gap]
@@ -84,13 +90,14 @@ def fig_pareto() -> list[str]:
         ax.set_xscale("log")
         ax.set_yscale("log")
         ax.set_title(f"{gap} idle gap")
-        ax.set_xlabel("p95 latency (s), mean of 10 seeds")
+        ax.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
     axes[0].set_ylabel("USD per 1,000 queries")
     h, lab = axes[0].get_legend_handles_labels()
     fig.legend(h, lab, loc="upper center", ncol=4, frameon=False, bbox_to_anchor=(0.5, 1.13),
                markerscale=0.8)
-    fig.text(0.99, -0.02, "marker size: burst rate 1 / 4 / 12 q/s; dotted: p95 target 0.5 s",
-             ha="right", fontsize=5.5, color="#5f5e5a")
+    fig.supxlabel("p95 latency (s), mean of 10 seeds", fontsize=7, y=-0.06)
+    fig.text(0.5, -0.12, "marker size: burst rate 1 / 4 / 12 q/s; dotted: p95 target 0.5 s; short gap: all "
+             "S-policies coincide (no pause; S-prewarm on top); long gap: S-tuned under S-floor", ha="center", va="top", fontsize=5, color="#5f5e5a")
     return save(fig, "cost_vs_p95")
 
 
@@ -180,6 +187,12 @@ def fig_redset() -> list[str]:
     ax.set_xlabel("p95 latency (s), mean of 10 seeds")
     ax.set_ylabel("USD per 1,000 queries")
     ax.set_title("Redset: one serverless instance-day")
+    hidden = [p for p in POLICIES if p in m.index and any(
+        q != p and np.isclose(m.loc[p].to_numpy(), m.loc[q].to_numpy(), rtol=0.05).all()
+        for q in POLICIES[POLICIES.index(p) + 1:] if q in m.index)]
+    if hidden:
+        fig.text(0.5, -0.1, "overlapping (within 5%): " + ", ".join(hidden) + " under later policies",
+                 ha="center", va="top", fontsize=5, color="#5f5e5a")
     ax.legend(frameon=False, fontsize=5.5, ncol=2, loc="best")
     return save(fig, "redset_cost_vs_p95")
 
