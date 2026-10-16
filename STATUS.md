@@ -1,4 +1,4 @@
-Next check-in: 11:45 IST (Tier 5 release)
+Next check-in: done — owner review of RESULTS.md
 
 # STATUS
 
@@ -12,11 +12,12 @@ Phase 1 (HP) history: see git log at aee62b5; HP results in results/hp_bootstrap
 | T2 | Simulator, cost model, policies, tests, sweep (Docker-only mode) | done (600 runs, 47 s) | 10:54 | 11:35 | 11:00 |
 | T3 | Validation: sim vs real Docker s2 10-min replay | done: FAIL (p95 −92 %, CPU-s −55 %) | 11:00 | 11:25 | 11:12 |
 | T4 | Stats, Redset, figures | done | 11:13 | 11:35 | 11:14 |
-| T5 | RESULTS.md, release | pending |  | 12:45 |  |
+| T5 | RESULTS.md, release | done | 11:15 | 11:25 | 11:15 |
 
 ## Errors and blockers
 
-- .env not present on the Dell yet (asked owner at 10:58). Neon checks fail until then.
+- .env never arrived; all Neon work skipped (Docker-only + modelled serverless mode).
+- Validation FAILED the frozen bands (results/validation.json); simulator under-predicts latency under load.
 
 ## Free disk space
 
