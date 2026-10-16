@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "redset_overload_check",
-    "git_commit": "bce5431638c29662873b1f0dfdbcd16e12b3d7a8-dirty",
+    "git_commit": "3d602ac2fd253187c32b4f45601d07a96c5d658c",
     "host": {
       "host": "Dell G15",
       "hostname": "DESKTOP-9RMGOEA",
@@ -10,8 +10,8 @@
       "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
       "logical_cpus": 16
     },
-    "utc": "2026-10-16T05:58:03+00:00",
-    "ist": "2026-10-16T11:28:03+05:30",
+    "utc": "2026-10-16T06:13:55+00:00",
+    "ist": "2026-10-16T11:43:55+05:30",
     "settings": {
       "sources": [
         "results/redset_trace.json",

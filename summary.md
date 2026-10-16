@@ -22,3 +22,6 @@ results/stats.csv; Redset one instance-day (results/redset_trace.json, results/r
 
 ## Tier 5 – Release
 RESULTS.md generated from results/; secret scan; final commit and push.
+
+## Tier 6 – Contention fix + revalidation
+A: scripts/validate_docker.py logs every query's error class, requires --out and refuses to overwrite (v1 not re-run). B: results/calib_contention.json (s2 only; s1/s4 cut), fit in RESULTS.md Table 6. C: src/sim.py contention term (sim v2; v1 unchanged), 26 tests pass. D: results/validation_v2.json (trace seed 9191), RESULTS.md Table 7: v2 FAILED on p95, passed on CPU-s. E: not run (v2 failed). F: results/redset_overload_check.json (Table 8); stats, figures (contention_fit, validation_v2_sim_vs_real) and RESULTS.md regenerated; headline numbers stay sim v1, unvalidated.

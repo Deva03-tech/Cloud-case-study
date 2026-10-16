@@ -105,6 +105,48 @@ Source: results/redset_sweep.parquet, results/redset_sweep.json, results/redset_
 
 Source: results/stats.csv (294 rows): mean ± std, bootstrap 95 % CI (10,000 resamples), Wilcoxon signed-rank vs P-peak paired by seed, per metric, policy and cell.
 
+## Table 6 – Concurrency calibration and contention fit (Tier 6B)
+
+Source: results/calib_contention.json. Closed loop, 8-query mix, 120 s per level, cold restart once per size. Model latency = base_q × max(1, a·n/c), fitted only on this file.
+
+| size | n | completed | errors | CPU-s | wall s | mean ratio | mean pred | mean resid |
+|---|---|---|---|---|---|---|---|---|
+| s2 | 1 | 2158 | 0 | 229.7 | 120 | 1.000 | 1.292 | -0.292 |
+| s2 | 2 | 2277 | 0 | 240.3 | 120 | 1.910 | 2.584 | -0.674 |
+| s2 | 4 | 2001 | 3 | 240.5 | 120 | 4.398 | 5.168 | -0.770 |
+| s2 | 8 | 1511 | 22 | 241.0 | 121 | 10.927 | 10.336 | +0.591 |
+
+s2: a = 2.584, R² = 0.956, cpu_per_base = 2.147 (CPU-seconds per second of uncontended service).
+
+## Table 7 – Validation v2 (new trace, sim v1 and sim v2)
+
+Source: results/validation_v2.json. Trace seed 9191 (v1 used 4242); same workload shape and frozen bands (|p95 error| ≤ 25 %, |CPU-s error| ≤ 20 %). Real replay: 5053 arrivals, 4992 completed, 61 errors {'DiskFull': 61}, 0 unaccounted.
+
+| sim | p95 real | p95 sim | p95 error | CPU-s real | CPU-s sim | CPU-s error | pass |
+|---|---|---|---|---|---|---|---|
+| v1 | 1.6225 | 0.1864 | -88.5% | 634.6 | 291.5 | -54.1% | FAIL |
+| v2 | 1.6225 | 2.1838 | +34.6% | 634.6 | 625.8 | -1.4% | FAIL |
+
+## Table 8 – Redset P-mean overload check
+
+Source: results/redset_overload_check.json.
+
+| quantity | value |
+|---|---|
+| P-mean size (vCPU) / servers | 1.0 / 1 |
+| capacity (q/s) | 9.94 |
+| ρ day mean | 0.033 |
+| ρ peak hour (hour 22) | 0.799 |
+| ρ max minute | 3.040 |
+| minutes with ρ > 1 | 21 |
+| max fluid backlog (queries) / drain (s) | 14344.0 / 1442.3 |
+| queue unbounded during overload minutes | True |
+| sim v1 P-mean p95 (s) | 1416.9 |
+
+## Which version the headline numbers use
+
+**Headline version:** no simulator version passed validation; Tables 2 and 4 (sim v1) are reported as-is and are NOT validated. Sweep latencies under load are optimistic (see Tables 3 and 7).
+
 ## Figures
 
 | figure | source |
@@ -115,15 +157,19 @@ Source: results/stats.csv (294 rows): mean ± std, bootstrap 95 % CI (10,000 res
 | figures/cold_starts_by_gap.pdf (+ .png) | results/sweep.parquet |
 | figures/validation_sim_vs_real.pdf (+ .png) | results/validation.json (+ simulator seed 0 on the same trace) |
 | figures/redset_cost_vs_p95.pdf (+ .png) | results/redset_sweep.parquet |
+| figures/contention_fit.pdf (+ .png) | results/calib_contention.json |
+| figures/validation_v2_sim_vs_real.pdf (+ .png) | results/validation_v2.json (+ sim v1/v2 seed 0 on the same trace) |
 
 ## Result files
 
+- results/calib_contention.json
 - results/calib_docker.json
 - results/env_check.json
 - results/figures.json
 - results/load_docker_sf0.1.json
 - results/machine_dell.json
 - results/redset_fetch.json
+- results/redset_overload_check.json
 - results/redset_sweep.json
 - results/redset_sweep.parquet
 - results/redset_trace.json
@@ -134,6 +180,7 @@ Source: results/stats.csv (294 rows): mean ± std, bootstrap 95 % CI (10,000 res
 - results/sweep_latency_seed0.parquet
 - results/tpch_sf0.1_gen.json
 - results/validation.json
+- results/validation_v2.json
 - results/hp_bootstrap/ (HP, not used)
 
 ## Deviations and cuts (2026-10-16, from DECISIONS.md)
@@ -166,6 +213,15 @@ Source: results/stats.csv (294 rows): mean ± std, bootstrap 95 % CI (10,000 res
 - 2026-10-16 11:14 IST · Redset: one instance-day chosen by max CV of hourly counts among instance-days with 2,000–60,000 queries → instance 1, 2024-04-10, 28,615 queries, CV 4.90 (results/redset_trace.json); arrivals mapped uniformly to the 8 TPC-H queries per seed; P-sched uses an oracle hourly schedule (4 vCPU in above-mean hours); 7 policies × 10 seeds + 4 τ candidates; ran in 14 s · Owner Tier 4 (one day); sweep had finished, so not skipped.
 - 2026-10-16 11:14 IST · Stats: per source/cell/policy/metric mean, std, bootstrap 95 % CI (10,000 resamples, seed 0), two-sided Wilcoxon signed-rank vs P-peak paired by seed (NaN when all differences are 0) → results/stats.csv (294 rows) · Owner Tier 4 spec.
 - 2026-10-16 11:14 IST · Figures: 3.5-in width, PDF (Type 42 fonts) + PNG 300 dpi, policy colours from the dataviz skill's validated default categorical order, marker shape/line style separate provisioned from serverless; footnotes name coinciding policies. Static paper figures, so no hover layer · Owner Tier 4 spec.
+- 2026-10-16 11:24 IST · Tier 6B measured on s2 only; s1 and s4 cut up front · Each size costs 8 min of closed loops and Docker is also needed for the 10-min validation v2 replay before the 12:15 hard stop. Sim v2 applies the s2 fit (a, cpu_per_base) to every capacity c (the model is already relative to c); stated as a threat.
+- 2026-10-16 11:25 IST · Closed-loop query choice seeded with Python hash(size), which is randomised per process; the exact query sequence is not reproducible (fits and medians are) · Script flaw, found after launch; not re-run for time.
+- 2026-10-16 11:26 IST · Sim v2 = sim v1 + contention: up to max_conc = 32 queries in service (the replay's connection pool) instead of k = round(c); a query starting with `active` queries in service (itself included) takes base × max(1, a·active/c), slowdown fixed at its start (no re-sharing when others finish); CPU-seconds = Σ base × cpu_per_base. a and cpu_per_base read only from results/calib_contention.json (cpu_per_base = median over n of CPU-s / Σ base of completed queries). simulate(contention=None) is sim v1, unchanged (test asserts it).
+- 2026-10-16 11:33 IST · Contention fit (s2): a = 2.584, R² = 0.956, cpu_per_base = 2.15. Residuals are systematic: model over-predicts at n = 1, 2, 4 (mean residual −0.29, −0.67, −0.77) and under-predicts at n = 8 (+0.59); the linear max(1, a·n/c) form is the owner-specified simple model and was not changed · Reported as-is.
+- 2026-10-16 11:33 IST · Closed-loop errors are psycopg DiskFull at n = 4 (3) and n = 8 (22): PostgreSQL parallel workers exhausting Docker's default 64 MB /dev/shm. Very likely also the cause of the 96 unrecorded queries in validation v1. Container config NOT changed (v1 and v2 must run on the same system); real latencies exclude failed queries, which biases the real p95 low under heavy load · Threat; fix for future work: docker run --shm-size=1g.
+- 2026-10-16 11:33 IST · Validation v2 trace seed 9191 (v1: 4242), same workload shape (12 q/s, burst 120 s, gap 60 s, 600 s), same frozen bands; scores sim v1 and sim v2 on the same real replay · Owner Tier 6D.
+- 2026-10-16 11:30 IST · Redset overload check: hourly ρ for P-mean never exceeds 1 (peak 0.80), but at minute resolution 21 minutes exceed ρ = 1 (max 3.04); fluid backlog peaks at 14,344 queries (1,442 s to drain), which matches the simulated P-mean p95 (≈1,417 s). So the queue is unbounded during those minutes; sizing on the day mean is the cause · Owner Tier 6F.
+- 2026-10-16 11:44 IST · VALIDATION v2 FAILED (frozen bands) on trace seed 9191: real p95 1.6225 s; sim v2 2.1838 s (+34.6 %, band 25 %) FAIL; CPU-s real 634.6 vs sim v2 625.8 (−1.4 %) PASS. Sim v1 on the same trace: p95 −88.5 %, CPU-s −54.1 %. 61 real queries failed with DiskFull, 0 unaccounted. Sim v2 overshoots p95, consistent with the fit over-predicting slowdown at n ≤ 4 · Kept as-is, not re-tuned.
+- 2026-10-16 11:44 IST · Tier 6E (sweep/Redset re-run with sim v2, held-out S-tuned on seeds 10–19) NOT run · Owner rule: if v2 fails, stop and go to F. The --sim v2 / --select-seeds code paths exist but produced no results; the headline numbers stay sim v1 and are unvalidated.
 
 ## Open threats to validity
 
@@ -178,4 +234,8 @@ Source: results/stats.csv (294 rows): mean ± std, bootstrap 95 % CI (10,000 res
 - **Capacity equivalence** (1 vCPU = 1 Neon CU = 2 Aurora ACU) and linear per-vCPU RDS pricing are modelling choices. The RDS price comes from a third-party mirror of the AWS price list.
 - **S-tuned is selected in-sample** on the same 10 seeds it is evaluated on (optimistic). **P-sched resizes instantly** on a known schedule; real RDS resizes take minutes. Redset arrivals are mapped to TPC-H queries at random, and P-sched on Redset uses an oracle hourly schedule.
 - **Small scale factor** (TPC-H SF 0.1, 8 queries) and short simulated horizons (3 h for the synthetic sweep, 24 h for Redset).
+- **Contention model (sim v2) is fitted on s2 only** (s1/s4 cut) and applied to all capacities; its linear form max(1, a·n/c) has systematic residuals (over-predicts at n ≤ 4, under-predicts at n = 8; results/calib_contention.json), and the slowdown is fixed at query start rather than re-shared as load changes.
+- **Docker /dev/shm (64 MB default) caused DiskFull errors** under concurrency (results/calib_contention.json) and most likely the unrecorded queries in validation v1; failed queries are excluded from real latencies, biasing real p95 low under heavy load. The container config was kept identical across v1 and v2.
+- **Redset P-mean latency is backlog drain, not service time:** hourly ρ < 1 but 21 minutes with ρ > 1 (results/redset_overload_check.json).
+
 
