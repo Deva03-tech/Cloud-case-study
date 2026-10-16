@@ -23,6 +23,10 @@ def j(name: str) -> dict | None:
     return json.loads(p.read_text(encoding="utf-8")) if p.exists() else None
 
 
+def d_pass(v2: dict) -> bool:
+    return bool(v2["data"]["sim"].get("v2", {}).get("accept", {}).get("overall", False))
+
+
 def md_table(df: pd.DataFrame) -> str:
     cols = [str(c) for c in df.columns]
     lines = ["| " + " | ".join(cols) + " |", "|" + "---|" * len(cols)]
@@ -115,13 +119,94 @@ def main() -> int:
                 "mean ± std, bootstrap 95 % CI (10,000 resamples), Wilcoxon signed-rank vs P-peak paired by "
                 "seed, per metric, policy and cell.", ""]
 
+
+    # ---- Tier 6: contention fix + revalidation (v1 tables above are kept as-is) ----
+    cc = j("calib_contention")
+    if cc:
+        out += ["## Table 6 – Concurrency calibration and contention fit (Tier 6B)", "",
+                "Source: results/calib_contention.json. Closed loop, 8-query mix, 120 s per level, "
+                "cold restart once per size. Model latency = base_q × max(1, a·n/c), fitted only on this file.", "",
+                "| size | n | completed | errors | CPU-s | wall s | mean ratio | mean pred | mean resid |",
+                "|---|---|---|---|---|---|---|---|---|"]
+        for size, d in cc["data"].items():
+            f = d["fit"]
+            for L in d["levels"]:
+                r = f["residuals_by_n"][str(L["n"])] if str(L["n"]) in f["residuals_by_n"] else f["residuals_by_n"][L["n"]]
+                out.append(f"| {size} | {L['n']} | {L['completed']} | {len(L['errors'])} | {L['cpu_s']:.1f} | "
+                           f"{L['wall_s']:.0f} | {r['mean_ratio']:.3f} | {r['mean_pred']:.3f} | {r['mean_resid']:+.3f} |")
+            out += ["", f"{size}: a = {f['a']:.3f}, R² = {f['r2']:.3f}, cpu_per_base = {f['cpu_per_base']:.3f} "
+                    f"(CPU-seconds per second of uncontended service).", ""]
+
+    v2 = j("validation_v2")
+    if v2:
+        d, st_ = v2["data"], v2["meta"]["settings"]
+        rows = ["| sim | p95 real | p95 sim | p95 error | CPU-s real | CPU-s sim | CPU-s error | pass |",
+                "|---|---|---|---|---|---|---|---|"]
+        for ver, r in d["sim"].items():
+            rows.append(f"| {ver} | {d['real']['p95_s']:.4f} | {r['p95_s_mean']:.4f} | {r['error']['p95_rel']:+.1%} | "
+                        f"{d['real']['cpu_s']:.1f} | {r['cpu_s_mean']:.1f} | {r['error']['compute_s_rel']:+.1%} | "
+                        f"{'PASS' if r['accept']['overall'] else 'FAIL'} |")
+        out += ["## Table 7 – Validation v2 (new trace, sim v1 and sim v2)", "",
+                f"Source: results/validation_v2.json. Trace seed {st_['trace_seed']} (v1 used {st_['v1_trace_seed']}); "
+                "same workload shape and frozen bands (|p95 error| ≤ 25 %, |CPU-s error| ≤ 20 %). "
+                f"Real replay: {d['n_queries']} arrivals, {d['n_completed_real']} completed, {d['n_errors']} errors "
+                f"{d['errors_by_class']}, {d['n_unaccounted']} unaccounted.", ""] + rows + [""]
+
+    oc = j("redset_overload_check")
+    if oc:
+        d = oc["data"]
+        m = d["minute_resolution"]
+        out += ["## Table 8 – Redset P-mean overload check", "",
+                "Source: results/redset_overload_check.json.", "",
+                "| quantity | value |", "|---|---|",
+                f"| P-mean size (vCPU) / servers | {d['p_mean_size_vcpu']} / {d['servers_k']} |",
+                f"| capacity (q/s) | {d['capacity_qps']:.2f} |",
+                f"| ρ day mean | {d['rho_day_mean']:.3f} |",
+                f"| ρ peak hour (hour {d['peak_hour']}) | {d['rho_peak_hour']:.3f} |",
+                f"| ρ max minute | {m['rho_max_minute']:.3f} |",
+                f"| minutes with ρ > 1 | {m['minutes_with_rho_gt_1']} |",
+                f"| max fluid backlog (queries) / drain (s) | {m['fluid_backlog_max_queries_minute_res']} / {m['fluid_backlog_max_drain_s']} |",
+                f"| queue unbounded during overload minutes | {d['queue_unbounded_during_overload_minutes']} |",
+                f"| sim v1 P-mean p95 (s) | {d['sim_v1_p_mean']['p95_s_mean']:.1f} |", ""]
+
+    sw2 = j("sweep_v2")
+    if sw2:
+        a1 = pd.read_parquet(R / "sweep.parquet")
+        a1 = a1[~a1.aux].groupby(["intensity", "gap", "policy"])[["p95_s", "cost_per_1k_usd"]].mean()
+        a2 = pd.read_parquet(R / "sweep_v2.parquet")
+        a2 = a2[~a2.aux & (a2.split == "eval")].groupby(["intensity", "gap", "policy"])[
+            ["p95_s", "cost_per_1k_usd", "meets_p95"]].mean()
+        t = a1.join(a2, lsuffix="_v1", rsuffix="_v2").round(4).reset_index()
+        t["policy"] = pd.Categorical(t.policy, POL)
+        t = t.sort_values(["intensity", "gap", "policy"])
+        out += ["## Table 9 – Synthetic sweep, sim v1 vs sim v2", "",
+                "Source: results/sweep.parquet (v1, seeds 0–9, S-tuned in-sample) and results/sweep_v2.parquet "
+                "(v2, S-tuned τ chosen on seeds 0–9, all policies scored on held-out seeds 10–19). "
+                "S-tuned τ (v2): " + ", ".join(f"{k} {v['tau_s']:.0f}s" for k, v in sw2["data"]["tuned_tau"].items())
+                + ".", "", md_table(t), ""]
+    rs2 = j("redset_sweep_v2")
+    if rs2:
+        df = pd.DataFrame(rs2["data"]["summary_mean"])
+        df["policy"] = pd.Categorical(df.policy, POL)
+        out += ["## Table 10 – Redset replay, sim v2 (held-out seeds 10–19)", "",
+                f"Source: results/redset_sweep_v2.parquet, results/redset_sweep_v2.json; S-tuned τ = "
+                f"{rs2['data']['tuned_tau_s']:.0f} s chosen on seeds 0–9.", "", md_table(df.sort_values("policy")), ""]
+    head = ("**Headline version:** sim v2 (Tables 9–10) because it passed validation v2; v1 tables are kept for comparison."
+            if v2 and d_pass(v2) and sw2 else
+            "**Headline version:** no simulator version passed validation; Tables 2 and 4 (sim v1) are reported "
+            "as-is and are NOT validated. Sweep latencies under load are optimistic (see Tables 3 and 7).")
+    out += ["## Which version the headline numbers use", "", head, ""]
+
     fg = j("figures")
     if fg:
         src = {"calibration_docker": "results/calib_docker.json",
                "latency_cdf": "results/sweep_latency_seed0.parquet",
                "cost_vs_p95": "results/sweep.parquet", "cold_starts_by_gap": "results/sweep.parquet",
                "validation_sim_vs_real": "results/validation.json (+ simulator seed 0 on the same trace)",
-               "redset_cost_vs_p95": "results/redset_sweep.parquet"}
+               "redset_cost_vs_p95": "results/redset_sweep.parquet",
+               "contention_fit": "results/calib_contention.json",
+               "validation_v2_sim_vs_real": "results/validation_v2.json (+ sim v1/v2 seed 0 on the same trace)",
+               "cost_vs_p95_v2": "results/sweep_v2.parquet (held-out seeds)"}
         out += ["## Figures", "", "| figure | source |", "|---|---|"]
         for f in fg["data"]["files"]:
             if f.endswith(".pdf"):

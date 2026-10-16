@@ -9,3 +9,7 @@
 - **Capacity equivalence** (1 vCPU = 1 Neon CU = 2 Aurora ACU) and linear per-vCPU RDS pricing are modelling choices. The RDS price comes from a third-party mirror of the AWS price list.
 - **S-tuned is selected in-sample** on the same 10 seeds it is evaluated on (optimistic). **P-sched resizes instantly** on a known schedule; real RDS resizes take minutes. Redset arrivals are mapped to TPC-H queries at random, and P-sched on Redset uses an oracle hourly schedule.
 - **Small scale factor** (TPC-H SF 0.1, 8 queries) and short simulated horizons (3 h for the synthetic sweep, 24 h for Redset).
+- **Contention model (sim v2) is fitted on s2 only** (s1/s4 cut) and applied to all capacities; its linear form max(1, a·n/c) has systematic residuals (over-predicts at n ≤ 4, under-predicts at n = 8; results/calib_contention.json), and the slowdown is fixed at query start rather than re-shared as load changes.
+- **Docker /dev/shm (64 MB default) caused DiskFull errors** under concurrency (results/calib_contention.json) and most likely the unrecorded queries in validation v1; failed queries are excluded from real latencies, biasing real p95 low under heavy load. The container config was kept identical across v1 and v2.
+- **Redset P-mean latency is backlog drain, not service time:** hourly ρ < 1 but 21 minutes with ρ > 1 (results/redset_overload_check.json).
+

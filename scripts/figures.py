@@ -197,9 +197,84 @@ def fig_redset() -> list[str]:
     return save(fig, "redset_cost_vs_p95")
 
 
+def fig_contention() -> list[str]:
+    c = json.loads((R / "calib_contention.json").read_text())["data"]
+    fig, ax = plt.subplots(figsize=(W, 1.9))
+    for i, (size, d) in enumerate(c.items()):
+        f = d["fit"]
+        pts = pd.DataFrame(f["points"])
+        ax.scatter(pts.n * (1 + 0.04 * (pts.index % 8 - 3.5) / 3.5), pts.ratio, s=10, color="#2a78d6",
+                   edgecolor="white", linewidth=0.4, label=f"{size}: median ratio per query", zorder=3)
+        n = np.linspace(1, 8, 100)
+        ax.plot(n, np.maximum(1, f["a"] * n / f["c"]), "-", color="#eb6834",
+                label=f"fit max(1, a·n/c): a={f['a']:.2f}, R²={f['r2']:.2f}")
+    ax.set_xscale("log", base=2)
+    ax.set_xticks([1, 2, 4, 8], ["1", "2", "4", "8"])
+    ax.set_xlabel("Concurrent queries n (closed loop)")
+    ax.set_ylabel("Latency / latency at n=1")
+    ax.legend(frameon=False, loc="upper left")
+    return save(fig, "contention_fit")
+
+
+def fig_validation_v2() -> list[str]:
+    v = json.loads((R / "validation_v2.json").read_text())
+    d, st_ = v["data"], v["meta"]["settings"]
+    from scripts.validate_docker import WL
+    from src.sim import arrivals, load_contention
+    sm = ServiceModel.from_file()
+    trace = arrivals(WL, sm.queries, np.random.default_rng(st_["trace_seed"]))
+    pol = Policy("V-s2", "provisioned", size=2.0)
+    s1 = simulate(pol, WL, sm, 0, trace=trace, keep_latencies=True)
+    s2 = simulate(pol, WL, sm, 0, trace=trace, keep_latencies=True, contention=load_contention("s2"))
+    fig, ax = plt.subplots(figsize=(W, 1.9))
+    for x, sty, col, lab in ((d["real_latencies_s"], "-", "#2a78d6", "real Docker s2"),
+                             (s1["latencies"], ":", "#eb6834", "sim v1 (seed 0)"),
+                             (s2["latencies"], "--", "#1baf7a", "sim v2 (seed 0)")):
+        x = np.sort(x)
+        ax.plot(x, np.arange(1, len(x) + 1) / len(x), sty, color=col, label=lab)
+    ax.set_xscale("log")
+    ax.set_xlabel("End-to-end latency (s)")
+    ax.set_ylabel("CDF")
+    e1, e2 = d["sim"]["v1"]["error"], d["sim"]["v2"]["error"]
+    ax.set_title(f"New trace (seed {st_['trace_seed']}): p95 err v1 {e1['p95_rel']:+.0%}, "
+                 f"v2 {e2['p95_rel']:+.0%}; CPU-s err v1 {e1['compute_s_rel']:+.0%}, v2 {e2['compute_s_rel']:+.0%}",
+                 fontsize=6)
+    ax.legend(frameon=False, loc="lower right")
+    return save(fig, "validation_v2_sim_vs_real")
+
+
+def fig_pareto_v2() -> list[str]:
+    if not (R / "sweep_v2.parquet").exists():
+        return []
+    sw = pd.read_parquet(R / "sweep_v2.parquet")
+    m = sw[~sw.aux & (sw.split == "eval")].groupby(["intensity", "gap", "policy"])[
+        ["p95_s", "cost_per_1k_usd"]].mean().reset_index()
+    fig, axes = plt.subplots(1, 2, figsize=(W, 2.0), sharey=True, sharex=True)
+    sizes = {"low": 10, "mid": 22, "high": 40}
+    for ax, gap in zip(axes, ["short", "long"]):
+        d = m[m.gap == gap]
+        for p in POLICIES:
+            dp = d[d.policy == p]
+            ax.scatter(dp.p95_s, dp.cost_per_1k_usd, s=[sizes[i] for i in dp.intensity], marker=mk(p),
+                       color=COLORS[p], edgecolor="white", linewidth=0.6, label=p, zorder=3)
+        ax.axvline(0.5, color="#5f5e5a", lw=0.7, ls=":")
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+        ax.set_title(f"{gap} idle gap (sim v2)")
+        ax.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+    axes[0].set_ylabel("USD per 1,000 queries")
+    h, lab = axes[0].get_legend_handles_labels()
+    fig.legend(h, lab, loc="upper center", ncol=4, frameon=False, bbox_to_anchor=(0.5, 1.13), markerscale=0.8)
+    fig.supxlabel("p95 latency (s), mean of held-out seeds 10-19", fontsize=7, y=-0.06)
+    fig.text(0.5, -0.12, "marker size: burst rate 1 / 4 / 12 q/s; dotted: p95 target 0.5 s; "
+             "coinciding policies overlap", ha="center", va="top", fontsize=5, color="#5f5e5a")
+    return save(fig, "cost_vs_p95_v2")
+
+
 def main() -> int:
     made, failed = [], {}
-    for fn in (fig_calibration, fig_latency_cdf, fig_pareto, fig_cold_starts, fig_validation, fig_redset):
+    for fn in (fig_calibration, fig_latency_cdf, fig_pareto, fig_cold_starts, fig_validation, fig_redset,
+               fig_contention, fig_validation_v2, fig_pareto_v2):
         try:
             made += fn()
         except Exception as e:  # one broken figure must not block the rest
