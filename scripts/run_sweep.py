@@ -126,12 +126,17 @@ def main() -> int:
                                           "latency_s": np.asarray(lat, dtype=np.float32)}))
     pd.concat(lat_rows).to_parquet(common.RESULTS_DIR / f"sweep_latency_seed0{sfx}.parquet", index=False)
 
-    main_df = df[~df.aux] if sel_n is None else df[~df.aux & (df.split == "eval")]
+    main_df = df[~df.aux] if sel_n is None else df[~df.aux & (df.split == "select")]
+    held_df = None if sel_n is None else df[~df.aux & (df.split == "eval")]
     common.write_result(f"sweep{sfx}", {
         "runs_total": len(res), "rows_main": len(main_df), "elapsed_s": round(elapsed, 1),
         "p95_target_s": p95_t, "p99_target_s": p99_t, "tuned_tau": tuned,
         "files": [f"results/sweep{sfx}.parquet", f"results/sweep_latency_seed0{sfx}.parquet"],
         "sim_version": args.sim, "contention": cont, "select_seeds": sel_n,
+        "summary_scope": "seeds < select_seeds (main grid, S-tuned in-sample)" if sel_n else "all seeds",
+        "summary_heldout_mean": None if held_df is None else held_df.groupby(["intensity", "gap", "policy"])[
+            ["p95_s", "p99_s", "compute_vcpu_s", "cost_per_1k_usd", "cold_starts"]].mean()
+            .round(4).reset_index().to_dict(orient="records"),
         "summary_mean": main_df.groupby(["intensity", "gap", "policy"])[
             ["p95_s", "p99_s", "compute_vcpu_s", "cost_per_1k_usd", "cold_starts"]].mean()
             .round(4).reset_index().to_dict(orient="records"),

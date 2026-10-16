@@ -127,9 +127,13 @@ def main() -> int:
     df = pd.concat([df, sel], ignore_index=True)
     df["meets_p95"], df["meets_p99"] = df.p95_s <= p95_t, df.p99_s <= p99_t
     df.to_parquet(common.RESULTS_DIR / f"redset_sweep{sfx}.parquet", index=False)
-    dm = df[~df.aux] if sel_n is None else df[~df.aux & (df.split == "eval")]
+    dm = df[~df.aux] if sel_n is None else df[~df.aux & (df.split == "select")]
+    dh = None if sel_n is None else df[~df.aux & (df.split == "eval")]
     common.write_result(f"redset_sweep{sfx}", {
         "sim_version": args.sim, "contention": cont, "select_seeds": sel_n,
+        "summary_heldout_mean": None if dh is None else dh.groupby("policy")[
+            ["p95_s", "p99_s", "compute_vcpu_s", "cost_per_1k_usd", "cold_starts"]].mean()
+            .round(4).reset_index().to_dict(orient="records"),
         "runs": len(jobs), "elapsed_s": round(time.perf_counter() - t0, 1),
         "tuned_tau_s": best, "tuned_meets_target": bool(ok), "p95_target_s": p95_t,
         "sched_windows_h": [int(a // 3600) for a, _ in windows],
