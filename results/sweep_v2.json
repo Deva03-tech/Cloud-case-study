@@ -1,0 +1,1053 @@
+{
+  "meta": {
+    "name": "sweep_v2",
+    "git_commit": "c542cdb96f70d5910170af064796b15198b2a641",
+    "host": {
+      "host": "Dell G15",
+      "hostname": "DESKTOP-9RMGOEA",
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.13.7",
+      "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+      "logical_cpus": 16
+    },
+    "utc": "2026-10-16T06:19:27+00:00",
+    "ist": "2026-10-16T11:49:27+05:30",
+    "settings": {
+      "mode": "Docker-only + modelled serverless (no .env)",
+      "rates_qps": {
+        "low": 1.0,
+        "mid": 4.0,
+        "high": 12.0
+      },
+      "gaps_s": {
+        "short": 180.0,
+        "long": 1200.0
+      },
+      "burst_s": 300.0,
+      "horizon_s": 10800.0,
+      "seeds": 20,
+      "taus_s": [
+        60.0,
+        120.0,
+        300.0,
+        600.0,
+        1800.0
+      ],
+      "policy_params": {
+        "P-peak": {
+          "name": "P-peak",
+          "kind": "provisioned",
+          "size": 4.0,
+          "scheduled": false,
+          "idle_size": 1.0,
+          "tau_s": 300.0,
+          "c_min": 0.25,
+          "c_max": 4.0,
+          "resume_s": 15.0,
+          "d_up_s": 5.0,
+          "cooldown_s": 60.0,
+          "prewarm": false,
+          "prewarm_margin_s": 5.0,
+          "price_model": "rds_postgresql"
+        },
+        "P-mean": {
+          "name": "P-mean",
+          "kind": "provisioned",
+          "size": 1.0,
+          "scheduled": false,
+          "idle_size": 1.0,
+          "tau_s": 300.0,
+          "c_min": 0.25,
+          "c_max": 4.0,
+          "resume_s": 15.0,
+          "d_up_s": 5.0,
+          "cooldown_s": 60.0,
+          "prewarm": false,
+          "prewarm_margin_s": 5.0,
+          "price_model": "rds_postgresql"
+        },
+        "P-sched": {
+          "name": "P-sched",
+          "kind": "provisioned",
+          "size": 4.0,
+          "scheduled": true,
+          "idle_size": 1.0,
+          "tau_s": 300.0,
+          "c_min": 0.25,
+          "c_max": 4.0,
+          "resume_s": 15.0,
+          "d_up_s": 5.0,
+          "cooldown_s": 60.0,
+          "prewarm": false,
+          "prewarm_margin_s": 5.0,
+          "price_model": "rds_postgresql"
+        },
+        "S-default": {
+          "name": "S-default",
+          "kind": "serverless",
+          "size": 4.0,
+          "scheduled": false,
+          "idle_size": 1.0,
+          "tau_s": 300.0,
+          "c_min": 0.25,
+          "c_max": 4.0,
+          "resume_s": 15.0,
+          "d_up_s": 5.0,
+          "cooldown_s": 60.0,
+          "prewarm": false,
+          "prewarm_margin_s": 5.0,
+          "price_model": "aurora_serverless_v2"
+        },
+        "S-floor": {
+          "name": "S-floor",
+          "kind": "serverless",
+          "size": 4.0,
+          "scheduled": false,
+          "idle_size": 1.0,
+          "tau_s": Infinity,
+          "c_min": 0.25,
+          "c_max": 4.0,
+          "resume_s": 15.0,
+          "d_up_s": 5.0,
+          "cooldown_s": 60.0,
+          "prewarm": false,
+          "prewarm_margin_s": 5.0,
+          "price_model": "aurora_serverless_v2"
+        },
+        "S-prewarm": {
+          "name": "S-prewarm",
+          "kind": "serverless",
+          "size": 4.0,
+          "scheduled": false,
+          "idle_size": 1.0,
+          "tau_s": 300.0,
+          "c_min": 0.25,
+          "c_max": 4.0,
+          "resume_s": 15.0,
+          "d_up_s": 5.0,
+          "cooldown_s": 60.0,
+          "prewarm": true,
+          "prewarm_margin_s": 5.0,
+          "price_model": "aurora_serverless_v2"
+        }
+      },
+      "service_model": {
+        "a": {
+          "q01": 0.36836041562219524,
+          "q03": 0.035151945805114215,
+          "q04": 0.08868831752371095,
+          "q05": 0.026578624431540125,
+          "q06": 0.04985697542752232,
+          "q10": 0.07817254184689672,
+          "q12": 0.09141084649605027,
+          "q14": 0.04877067892525114
+        },
+        "b": {
+          "q01": 0.953532219362067,
+          "q03": 0.2699562936725014,
+          "q04": 0.29496904800593277,
+          "q05": 0.29079236750610793,
+          "q06": 0.6750493837892623,
+          "q10": 0.56869511377051,
+          "q12": 0.8808529186410512,
+          "q14": 0.5824270059474453
+        },
+        "calib": "results/calib_docker.json"
+      },
+      "rtt_s": 0.0,
+      "workers": 14,
+      "note": "S-tuned tau selected in-sample on the same 10 seeds; taus < 300 s exceed Aurora's 300 s minimum (Neon Scale allows 60 s)"
+    }
+  },
+  "data": {
+    "runs_total": 1200,
+    "rows_main": 420,
+    "elapsed_s": 94.0,
+    "p95_target_s": 0.5,
+    "p99_target_s": 1.0,
+    "tuned_tau": {
+      "high/long": {
+        "tau_s": 1800.0,
+        "meets_target": false
+      },
+      "high/short": {
+        "tau_s": 300.0,
+        "meets_target": false
+      },
+      "low/long": {
+        "tau_s": 1800.0,
+        "meets_target": false
+      },
+      "low/short": {
+        "tau_s": 300.0,
+        "meets_target": false
+      },
+      "mid/long": {
+        "tau_s": 1800.0,
+        "meets_target": true
+      },
+      "mid/short": {
+        "tau_s": 300.0,
+        "meets_target": true
+      }
+    },
+    "files": [
+      "results/sweep_v2.parquet",
+      "results/sweep_latency_seed0_v2.parquet"
+    ],
+    "sim_version": "v2",
+    "contention": {
+      "a": 2.584,
+      "cpu_per_base": 2.147035291189468,
+      "max_conc": 32,
+      "fit_size": "s2",
+      "r2": 0.9559756144542456
+    },
+    "select_seeds": 10,
+    "summary_scope": "seeds < select_seeds (main grid, S-tuned in-sample)",
+    "summary_heldout_mean": [
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "P-mean",
+        "p95_s": 594.7747,
+        "p99_s": 634.4556,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.009,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "P-peak",
+        "p95_s": 0.1284,
+        "p99_s": 0.193,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.036,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "P-sched",
+        "p95_s": 0.1284,
+        "p99_s": 0.193,
+        "compute_vcpu_s": 17820.0,
+        "cost_per_1k_usd": 0.0148,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "S-default",
+        "p95_s": 33.1389,
+        "p99_s": 41.7612,
+        "compute_vcpu_s": 15248.5904,
+        "cost_per_1k_usd": 0.0363,
+        "cold_starts": 7.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "S-floor",
+        "p95_s": 3.6943,
+        "p99_s": 8.1844,
+        "compute_vcpu_s": 12894.1,
+        "cost_per_1k_usd": 0.0307,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "S-prewarm",
+        "p95_s": 7.7247,
+        "p99_s": 31.8713,
+        "compute_vcpu_s": 12041.5894,
+        "cost_per_1k_usd": 0.0286,
+        "cold_starts": 1.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "S-tuned",
+        "p95_s": 3.6943,
+        "p99_s": 8.1844,
+        "compute_vcpu_s": 12894.1,
+        "cost_per_1k_usd": 0.0307,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "P-mean",
+        "p95_s": 2.2412,
+        "p99_s": 4.4574,
+        "compute_vcpu_s": 21600.0,
+        "cost_per_1k_usd": 0.0062,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "P-peak",
+        "p95_s": 0.1286,
+        "p99_s": 0.193,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.0124,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "P-sched",
+        "p95_s": 0.1286,
+        "p99_s": 0.193,
+        "compute_vcpu_s": 31140.0,
+        "cost_per_1k_usd": 0.009,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "S-default",
+        "p95_s": 0.9039,
+        "p99_s": 5.5378,
+        "compute_vcpu_s": 32670.975,
+        "cost_per_1k_usd": 0.0268,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "S-floor",
+        "p95_s": 0.9039,
+        "p99_s": 5.5378,
+        "compute_vcpu_s": 32670.975,
+        "cost_per_1k_usd": 0.0268,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "S-prewarm",
+        "p95_s": 0.9039,
+        "p99_s": 5.5378,
+        "compute_vcpu_s": 32670.975,
+        "cost_per_1k_usd": 0.0268,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "S-tuned",
+        "p95_s": 0.9039,
+        "p99_s": 5.5378,
+        "compute_vcpu_s": 32670.975,
+        "cost_per_1k_usd": 0.0268,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "P-mean",
+        "p95_s": 0.9931,
+        "p99_s": 2.1633,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.1095,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "P-peak",
+        "p95_s": 0.1033,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.4379,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "P-sched",
+        "p95_s": 0.1033,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 17820.0,
+        "cost_per_1k_usd": 0.1806,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "S-default",
+        "p95_s": 12.9504,
+        "p99_s": 100.7247,
+        "compute_vcpu_s": 8809.5758,
+        "cost_per_1k_usd": 0.2551,
+        "cold_starts": 7.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "S-floor",
+        "p95_s": 0.6066,
+        "p99_s": 1.9091,
+        "compute_vcpu_s": 6840.825,
+        "cost_per_1k_usd": 0.1982,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "S-prewarm",
+        "p95_s": 0.9309,
+        "p99_s": 9.7381,
+        "compute_vcpu_s": 5908.3354,
+        "cost_per_1k_usd": 0.1712,
+        "cold_starts": 1.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "S-tuned",
+        "p95_s": 0.6066,
+        "p99_s": 1.9091,
+        "compute_vcpu_s": 6840.825,
+        "cost_per_1k_usd": 0.1982,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "P-mean",
+        "p95_s": 0.9976,
+        "p99_s": 1.9923,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.0374,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "P-peak",
+        "p95_s": 0.1029,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.1495,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "P-sched",
+        "p95_s": 0.1029,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 31140.0,
+        "cost_per_1k_usd": 0.1078,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "S-default",
+        "p95_s": 0.5829,
+        "p99_s": 1.8881,
+        "compute_vcpu_s": 14906.55,
+        "cost_per_1k_usd": 0.1474,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "S-floor",
+        "p95_s": 0.5829,
+        "p99_s": 1.8881,
+        "compute_vcpu_s": 14906.55,
+        "cost_per_1k_usd": 0.1474,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "S-prewarm",
+        "p95_s": 0.5829,
+        "p99_s": 1.8881,
+        "compute_vcpu_s": 14906.55,
+        "cost_per_1k_usd": 0.1474,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "S-tuned",
+        "p95_s": 0.5829,
+        "p99_s": 1.8881,
+        "compute_vcpu_s": 14906.55,
+        "cost_per_1k_usd": 0.1474,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "P-mean",
+        "p95_s": 28.0325,
+        "p99_s": 40.0846,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.0271,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "P-peak",
+        "p95_s": 0.1058,
+        "p99_s": 0.1295,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.1084,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "P-sched",
+        "p95_s": 0.1058,
+        "p99_s": 0.1295,
+        "compute_vcpu_s": 17820.0,
+        "cost_per_1k_usd": 0.0447,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "S-default",
+        "p95_s": 19.1108,
+        "p99_s": 77.7228,
+        "compute_vcpu_s": 14745.8856,
+        "cost_per_1k_usd": 0.1057,
+        "cold_starts": 7.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "S-floor",
+        "p95_s": 0.4352,
+        "p99_s": 2.7566,
+        "compute_vcpu_s": 9777.25,
+        "cost_per_1k_usd": 0.0701,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "S-prewarm",
+        "p95_s": 1.0105,
+        "p99_s": 16.1601,
+        "compute_vcpu_s": 9494.6512,
+        "cost_per_1k_usd": 0.0681,
+        "cold_starts": 1.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "S-tuned",
+        "p95_s": 0.4352,
+        "p99_s": 2.7566,
+        "compute_vcpu_s": 9777.25,
+        "cost_per_1k_usd": 0.0701,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "P-mean",
+        "p95_s": 29.5151,
+        "p99_s": 40.568,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.0093,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "P-peak",
+        "p95_s": 0.1058,
+        "p99_s": 0.1287,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.0373,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "P-sched",
+        "p95_s": 0.1058,
+        "p99_s": 0.1287,
+        "compute_vcpu_s": 31140.0,
+        "cost_per_1k_usd": 0.0269,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "S-default",
+        "p95_s": 0.3719,
+        "p99_s": 2.061,
+        "compute_vcpu_s": 23383.65,
+        "cost_per_1k_usd": 0.0577,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "S-floor",
+        "p95_s": 0.3719,
+        "p99_s": 2.061,
+        "compute_vcpu_s": 23383.65,
+        "cost_per_1k_usd": 0.0577,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "S-prewarm",
+        "p95_s": 0.3719,
+        "p99_s": 2.061,
+        "compute_vcpu_s": 23383.65,
+        "cost_per_1k_usd": 0.0577,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "S-tuned",
+        "p95_s": 0.3719,
+        "p99_s": 2.061,
+        "compute_vcpu_s": 23383.65,
+        "cost_per_1k_usd": 0.0577,
+        "cold_starts": 0.0
+      }
+    ],
+    "summary_mean": [
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "P-mean",
+        "p95_s": 597.5216,
+        "p99_s": 633.7836,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.009,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "P-peak",
+        "p95_s": 0.1285,
+        "p99_s": 0.193,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.0358,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "P-sched",
+        "p95_s": 0.1285,
+        "p99_s": 0.193,
+        "compute_vcpu_s": 17820.0,
+        "cost_per_1k_usd": 0.0148,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "S-default",
+        "p95_s": 33.7881,
+        "p99_s": 41.8693,
+        "compute_vcpu_s": 15135.8577,
+        "cost_per_1k_usd": 0.0359,
+        "cold_starts": 7.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "S-floor",
+        "p95_s": 3.73,
+        "p99_s": 8.3335,
+        "compute_vcpu_s": 13062.175,
+        "cost_per_1k_usd": 0.031,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "S-prewarm",
+        "p95_s": 8.4747,
+        "p99_s": 32.488,
+        "compute_vcpu_s": 12184.7388,
+        "cost_per_1k_usd": 0.0289,
+        "cold_starts": 1.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "S-tuned",
+        "p95_s": 3.73,
+        "p99_s": 8.3335,
+        "compute_vcpu_s": 13062.175,
+        "cost_per_1k_usd": 0.031,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "P-mean",
+        "p95_s": 2.2956,
+        "p99_s": 4.4938,
+        "compute_vcpu_s": 21600.0,
+        "cost_per_1k_usd": 0.0062,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "P-peak",
+        "p95_s": 0.1286,
+        "p99_s": 0.193,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.0124,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "P-sched",
+        "p95_s": 0.1286,
+        "p99_s": 0.193,
+        "compute_vcpu_s": 31140.0,
+        "cost_per_1k_usd": 0.0089,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "S-default",
+        "p95_s": 0.9855,
+        "p99_s": 5.5341,
+        "compute_vcpu_s": 32832.125,
+        "cost_per_1k_usd": 0.0269,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "S-floor",
+        "p95_s": 0.9855,
+        "p99_s": 5.5341,
+        "compute_vcpu_s": 32832.125,
+        "cost_per_1k_usd": 0.0269,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "S-prewarm",
+        "p95_s": 0.9855,
+        "p99_s": 5.5341,
+        "compute_vcpu_s": 32832.125,
+        "cost_per_1k_usd": 0.0269,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "S-tuned",
+        "p95_s": 0.9855,
+        "p99_s": 5.5341,
+        "compute_vcpu_s": 32832.125,
+        "cost_per_1k_usd": 0.0269,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "P-mean",
+        "p95_s": 0.9919,
+        "p99_s": 1.9953,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.107,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "P-peak",
+        "p95_s": 0.1052,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.4281,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "P-sched",
+        "p95_s": 0.1052,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 17820.0,
+        "cost_per_1k_usd": 0.1766,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "S-default",
+        "p95_s": 10.9328,
+        "p99_s": 91.3171,
+        "compute_vcpu_s": 8689.7567,
+        "cost_per_1k_usd": 0.246,
+        "cold_starts": 7.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "S-floor",
+        "p95_s": 0.5835,
+        "p99_s": 1.8501,
+        "compute_vcpu_s": 6860.275,
+        "cost_per_1k_usd": 0.1942,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "S-prewarm",
+        "p95_s": 0.895,
+        "p99_s": 9.3184,
+        "compute_vcpu_s": 5963.5753,
+        "cost_per_1k_usd": 0.1689,
+        "cold_starts": 1.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "S-tuned",
+        "p95_s": 0.5835,
+        "p99_s": 1.8501,
+        "compute_vcpu_s": 6860.275,
+        "cost_per_1k_usd": 0.1942,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "P-mean",
+        "p95_s": 0.9947,
+        "p99_s": 1.9953,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.0372,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "P-peak",
+        "p95_s": 0.1045,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.1487,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "P-sched",
+        "p95_s": 0.1045,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 31140.0,
+        "cost_per_1k_usd": 0.1072,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "S-default",
+        "p95_s": 0.5491,
+        "p99_s": 1.9022,
+        "compute_vcpu_s": 14886.0,
+        "cost_per_1k_usd": 0.1464,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "S-floor",
+        "p95_s": 0.5491,
+        "p99_s": 1.9022,
+        "compute_vcpu_s": 14886.0,
+        "cost_per_1k_usd": 0.1464,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "S-prewarm",
+        "p95_s": 0.5491,
+        "p99_s": 1.9022,
+        "compute_vcpu_s": 14886.0,
+        "cost_per_1k_usd": 0.1464,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "S-tuned",
+        "p95_s": 0.5491,
+        "p99_s": 1.9022,
+        "compute_vcpu_s": 14886.0,
+        "cost_per_1k_usd": 0.1464,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "P-mean",
+        "p95_s": 29.1859,
+        "p99_s": 41.9858,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.027,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "P-peak",
+        "p95_s": 0.1058,
+        "p99_s": 0.1291,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.108,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "P-sched",
+        "p95_s": 0.1058,
+        "p99_s": 0.1291,
+        "compute_vcpu_s": 17820.0,
+        "cost_per_1k_usd": 0.0445,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "S-default",
+        "p95_s": 18.9218,
+        "p99_s": 75.4408,
+        "compute_vcpu_s": 14642.6073,
+        "cost_per_1k_usd": 0.1046,
+        "cold_starts": 7.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "S-floor",
+        "p95_s": 0.4569,
+        "p99_s": 2.7409,
+        "compute_vcpu_s": 9732.325,
+        "cost_per_1k_usd": 0.0695,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "S-prewarm",
+        "p95_s": 1.0634,
+        "p99_s": 16.5686,
+        "compute_vcpu_s": 9465.2756,
+        "cost_per_1k_usd": 0.0676,
+        "cold_starts": 1.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "S-tuned",
+        "p95_s": 0.4569,
+        "p99_s": 2.7409,
+        "compute_vcpu_s": 9732.325,
+        "cost_per_1k_usd": 0.0695,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "P-mean",
+        "p95_s": 30.0899,
+        "p99_s": 41.8955,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.0093,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "P-peak",
+        "p95_s": 0.1058,
+        "p99_s": 0.1287,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.0372,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "P-sched",
+        "p95_s": 0.1058,
+        "p99_s": 0.1287,
+        "compute_vcpu_s": 31140.0,
+        "cost_per_1k_usd": 0.0268,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "S-default",
+        "p95_s": 0.3773,
+        "p99_s": 2.0418,
+        "compute_vcpu_s": 23274.3625,
+        "cost_per_1k_usd": 0.0572,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "S-floor",
+        "p95_s": 0.3773,
+        "p99_s": 2.0418,
+        "compute_vcpu_s": 23274.3625,
+        "cost_per_1k_usd": 0.0572,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "S-prewarm",
+        "p95_s": 0.3773,
+        "p99_s": 2.0418,
+        "compute_vcpu_s": 23274.3625,
+        "cost_per_1k_usd": 0.0572,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "S-tuned",
+        "p95_s": 0.3773,
+        "p99_s": 2.0418,
+        "compute_vcpu_s": 23274.3625,
+        "cost_per_1k_usd": 0.0572,
+        "cold_starts": 0.0
+      }
+    ]
+  }
+}

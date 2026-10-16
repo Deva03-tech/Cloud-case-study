@@ -61,6 +61,13 @@ def main() -> int:
     if rp.exists():
         rd = pd.read_parquet(rp)
         rows += summarise(rd[~rd.aux], "redset", ["trace"], rng)
+    for name, cells in (("sweep_v2", ["intensity", "gap"]), ("redset_sweep_v2", ["trace"])):
+        pv = common.RESULTS_DIR / f"{name}.parquet"
+        if pv.exists():
+            dv = pd.read_parquet(pv)
+            src = name.replace("redset_sweep", "redset")
+            rows += summarise(dv[~dv.aux & (dv.split == "select")], src, cells, rng)
+            rows += summarise(dv[~dv.aux & (dv.split == "eval")], src + "_heldout", cells, rng)
     out = pd.DataFrame(rows)
     out.to_csv(common.RESULTS_DIR / "stats.csv", index=False, float_format="%.6g")
     common.write_result("stats", {"rows": len(out), "file": "results/stats.csv",

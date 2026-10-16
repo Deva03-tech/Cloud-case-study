@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "figures",
-    "git_commit": "3d602ac2fd253187c32b4f45601d07a96c5d658c-dirty",
+    "git_commit": "c542cdb96f70d5910170af064796b15198b2a641-dirty",
     "host": {
       "host": "Dell G15",
       "hostname": "DESKTOP-9RMGOEA",
@@ -10,8 +10,8 @@
       "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
       "logical_cpus": 16
     },
-    "utc": "2026-10-16T06:14:05+00:00",
-    "ist": "2026-10-16T11:44:05+05:30",
+    "utc": "2026-10-16T06:21:13+00:00",
+    "ist": "2026-10-16T11:51:13+05:30",
     "settings": {
       "width_in": 3.5,
       "formats": [
@@ -37,7 +37,9 @@
       "figures/contention_fit.pdf",
       "figures/contention_fit.png",
       "figures/validation_v2_sim_vs_real.pdf",
-      "figures/validation_v2_sim_vs_real.png"
+      "figures/validation_v2_sim_vs_real.png",
+      "figures/cost_vs_p95_v2.pdf",
+      "figures/cost_vs_p95_v2.png"
     ],
     "failed": {}
   }

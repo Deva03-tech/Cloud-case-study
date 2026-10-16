@@ -1,0 +1,195 @@
+{
+  "meta": {
+    "name": "redset_sweep_v2",
+    "git_commit": "c542cdb96f70d5910170af064796b15198b2a641",
+    "host": {
+      "host": "Dell G15",
+      "hostname": "DESKTOP-9RMGOEA",
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.13.7",
+      "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+      "logical_cpus": 16
+    },
+    "utc": "2026-10-16T06:19:51+00:00",
+    "ist": "2026-10-16T11:49:51+05:30",
+    "settings": {
+      "trace": {
+        "instance_id": 1,
+        "day": "2024-04-10",
+        "n_queries": 28615,
+        "hourly_cv": 4.898979485566357,
+        "hourly_counts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          28615,
+          0
+        ],
+        "candidates": 696
+      },
+      "seeds": 20,
+      "taus_s": [
+        60.0,
+        120.0,
+        300.0,
+        600.0,
+        1800.0
+      ],
+      "query_mapping": "uniform random over 8 TPC-H queries per seed"
+    }
+  },
+  "data": {
+    "sim_version": "v2",
+    "contention": {
+      "a": 2.584,
+      "cpu_per_base": 2.147035291189468,
+      "max_conc": 32,
+      "fit_size": "s2",
+      "r2": 0.9559756144542456
+    },
+    "select_seeds": 10,
+    "summary_heldout_mean": [
+      {
+        "policy": "P-mean",
+        "p95_s": 5767.3618,
+        "p99_s": 6027.7551,
+        "compute_vcpu_s": 86400.0,
+        "cost_per_1k_usd": 0.0705,
+        "cold_starts": 0.0
+      },
+      {
+        "policy": "P-peak",
+        "p95_s": 0.2596,
+        "p99_s": 0.4994,
+        "compute_vcpu_s": 345600.0,
+        "cost_per_1k_usd": 0.2818,
+        "cold_starts": 0.0
+      },
+      {
+        "policy": "P-sched",
+        "p95_s": 0.2596,
+        "p99_s": 0.4994,
+        "compute_vcpu_s": 97200.0,
+        "cost_per_1k_usd": 0.0793,
+        "cold_starts": 0.0
+      },
+      {
+        "policy": "S-default",
+        "p95_s": 8.937,
+        "p99_s": 22.9339,
+        "compute_vcpu_s": 5957.9144,
+        "cost_per_1k_usd": 0.0139,
+        "cold_starts": 1.0
+      },
+      {
+        "policy": "S-floor",
+        "p95_s": 0.2681,
+        "p99_s": 0.5225,
+        "compute_vcpu_s": 26939.95,
+        "cost_per_1k_usd": 0.0628,
+        "cold_starts": 0.0
+      },
+      {
+        "policy": "S-prewarm",
+        "p95_s": 8.937,
+        "p99_s": 22.9339,
+        "compute_vcpu_s": 5957.9144,
+        "cost_per_1k_usd": 0.0139,
+        "cold_starts": 1.0
+      },
+      {
+        "policy": "S-tuned",
+        "p95_s": 8.937,
+        "p99_s": 22.9339,
+        "compute_vcpu_s": 5957.9144,
+        "cost_per_1k_usd": 0.0139,
+        "cold_starts": 1.0
+      }
+    ],
+    "runs": 200,
+    "elapsed_s": 23.2,
+    "tuned_tau_s": 300.0,
+    "tuned_meets_target": false,
+    "p95_target_s": 0.5,
+    "sched_windows_h": [
+      22
+    ],
+    "summary_mean": [
+      {
+        "policy": "P-mean",
+        "p95_s": 5754.1977,
+        "p99_s": 6017.5204,
+        "compute_vcpu_s": 86400.0,
+        "cost_per_1k_usd": 0.0705,
+        "cold_starts": 0.0
+      },
+      {
+        "policy": "P-peak",
+        "p95_s": 0.2594,
+        "p99_s": 0.4898,
+        "compute_vcpu_s": 345600.0,
+        "cost_per_1k_usd": 0.2818,
+        "cold_starts": 0.0
+      },
+      {
+        "policy": "P-sched",
+        "p95_s": 0.2594,
+        "p99_s": 0.4898,
+        "compute_vcpu_s": 97200.0,
+        "cost_per_1k_usd": 0.0793,
+        "cold_starts": 0.0
+      },
+      {
+        "policy": "S-default",
+        "p95_s": 10.7539,
+        "p99_s": 26.1786,
+        "compute_vcpu_s": 5949.0394,
+        "cost_per_1k_usd": 0.0139,
+        "cold_starts": 1.0
+      },
+      {
+        "policy": "S-floor",
+        "p95_s": 0.2656,
+        "p99_s": 0.526,
+        "compute_vcpu_s": 26948.0,
+        "cost_per_1k_usd": 0.0628,
+        "cold_starts": 0.0
+      },
+      {
+        "policy": "S-prewarm",
+        "p95_s": 10.7539,
+        "p99_s": 26.1786,
+        "compute_vcpu_s": 5949.0394,
+        "cost_per_1k_usd": 0.0139,
+        "cold_starts": 1.0
+      },
+      {
+        "policy": "S-tuned",
+        "p95_s": 10.7539,
+        "p99_s": 26.1786,
+        "compute_vcpu_s": 5949.0394,
+        "cost_per_1k_usd": 0.0139,
+        "cold_starts": 1.0
+      }
+    ]
+  }
+}

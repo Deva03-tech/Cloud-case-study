@@ -12,4 +12,8 @@
 - **Contention model (sim v2) is fitted on s2 only** (s1/s4 cut) and applied to all capacities; its linear form max(1, a·n/c) has systematic residuals (over-predicts at n ≤ 4, under-predicts at n = 8; results/calib_contention.json), and the slowdown is fixed at query start rather than re-shared as load changes.
 - **Docker /dev/shm (64 MB default) caused DiskFull errors** under concurrency (results/calib_contention.json) and most likely the unrecorded queries in validation v1; failed queries are excluded from real latencies, biasing real p95 low under heavy load. The container config was kept identical across v1 and v2.
 - **Redset P-mean latency is backlog drain, not service time:** hourly ρ < 1 but 21 minutes with ρ > 1 (results/redset_overload_check.json).
+- **DiskFull errors from Docker's 64 MB /dev/shm affected both real replays (v1: 96 unrecorded queries; v2: 61 logged DiskFull) and the concurrency calibration (25 DiskFull at n = 4 and 8).** Failed queries are excluded from the real p95, so real tail latency under load is under-stated. Fix: `docker run --shm-size=1g`.
+- **The s2 contention fit is applied to all sizes** (0.25 to 4 vCPU-eq) in sim v2; s1 and s4 were never measured under concurrency.
+- **Non-reproducible closed-loop seeding:** the contention calibration seeded query choice with Python's per-process randomised hash(), so the exact query sequence cannot be replayed.
+- **Latency in sim v1 and sim v2 is not validated** (p95 error −88.5 % and +34.6 % on trace 9191); only sim v2 CPU-seconds passed (−1.4 %). The cost headlines rest on that check, but serverless billed compute also depends on the modelled scaling controller, which no replay tested.
 

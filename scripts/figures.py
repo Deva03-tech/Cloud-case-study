@@ -247,7 +247,7 @@ def fig_pareto_v2() -> list[str]:
     if not (R / "sweep_v2.parquet").exists():
         return []
     sw = pd.read_parquet(R / "sweep_v2.parquet")
-    m = sw[~sw.aux & (sw.split == "eval")].groupby(["intensity", "gap", "policy"])[
+    m = sw[~sw.aux & (sw.split == "select")].groupby(["intensity", "gap", "policy"])[
         ["p95_s", "cost_per_1k_usd"]].mean().reset_index()
     fig, axes = plt.subplots(1, 2, figsize=(W, 2.0), sharey=True, sharex=True)
     sizes = {"low": 10, "mid": 22, "high": 40}
@@ -265,7 +265,7 @@ def fig_pareto_v2() -> list[str]:
     axes[0].set_ylabel("USD per 1,000 queries")
     h, lab = axes[0].get_legend_handles_labels()
     fig.legend(h, lab, loc="upper center", ncol=4, frameon=False, bbox_to_anchor=(0.5, 1.13), markerscale=0.8)
-    fig.supxlabel("p95 latency (s), mean of held-out seeds 10-19", fontsize=7, y=-0.06)
+    fig.supxlabel("p95 latency (s, NOT validated), mean of seeds 0-9", fontsize=7, y=-0.06)
     fig.text(0.5, -0.12, "marker size: burst rate 1 / 4 / 12 q/s; dotted: p95 target 0.5 s; "
              "coinciding policies overlap", ha="center", va="top", fontsize=5, color="#5f5e5a")
     return save(fig, "cost_vs_p95_v2")
