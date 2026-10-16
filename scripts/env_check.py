@@ -17,6 +17,7 @@ from src import common  # noqa: E402
 
 PACKAGES = ["psycopg", "duckdb", "pandas", "pyarrow", "numpy", "scipy", "simpy",
             "matplotlib", "requests", "python-dotenv", "PyYAML", "pytest", "detect-secrets"]
+WSL_MEMORY = "9GB"  # Dell G15: 15.7 GB total minus 6 GB, rounded down
 OVERLAYS = {
     "961cc777-2547-4f9d-8174-7d86181b8a7a": "Best power efficiency",
     "00000000-0000-0000-0000-000000000000": "Balanced",
@@ -33,7 +34,8 @@ def ps(cmd: str, timeout: int = 30) -> str:
 
 def check_python():
     v = sys.version.split()[0]
-    return v.startswith("3.12"), v, {"python": v, "executable": sys.executable}
+    # Dell G15: only 3.11/3.13 installed; 3.13 has wheels for every pin (DECISIONS).
+    return v.startswith(("3.12", "3.13")), v, {"python": v, "executable": sys.executable}
 
 
 def check_packages():
@@ -62,7 +64,7 @@ def check_power_plan():
         " Select-Object ActiveOverlayAcPowerScheme,ActiveOverlayDcPowerScheme | ConvertTo-Json"))
     ac = OVERLAYS.get(ov.get("ActiveOverlayAcPowerScheme") or "", ov.get("ActiveOverlayAcPowerScheme"))
     dc = OVERLAYS.get(ov.get("ActiveOverlayDcPowerScheme") or "", ov.get("ActiveOverlayDcPowerScheme"))
-    ok = ac == "Best performance"
+    ok = "High performance" in scheme or ac == "Best performance"
     return ok, f"{scheme.split('(')[-1].rstrip(')')}; power mode AC={ac}, DC={dc}", {
         "scheme": scheme, "overlay_ac": ac, "overlay_dc": dc}
 
@@ -86,7 +88,7 @@ def check_wslconfig():
         if "=" in line:
             k, v = line.split("=", 1)
             vals[k.strip()] = v.strip()
-    want = {"memory": "20GB", "processors": "12", "swap": "4GB"}
+    want = {"memory": WSL_MEMORY, "processors": str(os.cpu_count()), "swap": "4GB"}
     ok = all(vals.get(k) == v for k, v in want.items())
     return ok, ", ".join(f"{k}={vals.get(k)}" for k in want), vals
 
@@ -104,16 +106,19 @@ def check_docker():
     ver = json.loads(ver)
     mem_gb = int(mem) / 1024**3
     ncpu = int(ncpu)
-    # .wslconfig asks for 12 CPUs / 20 GB; WSL reports slightly under the memory cap.
-    ok = ncpu == 12 and 18.5 <= mem_gb <= 20.5
+    # WSL reports slightly under the .wslconfig memory cap.
+    cap = float(WSL_MEMORY.rstrip("GB"))
+    ok = ncpu == os.cpu_count() and cap - 1.5 <= mem_gb <= cap + 0.5
     return ok, f"server {ver}; WSL2 sees {ncpu} CPUs, {mem_gb:.1f} GB", {
         "server_version": ver, "ncpu": ncpu, "mem_gb": round(mem_gb, 2)}
 
 
 def check_disk():
-    free = common.free_gb("C:\\")
-    return free >= common.MIN_FREE_GB, f"C: {free:.1f} GB free (stop line {common.MIN_FREE_GB:.0f})", {
-        "c_free_gb": round(free, 1)}
+    c, d = common.free_gb("C:\\"), common.free_gb(common.DATA_DRIVE)
+    ok = c >= common.MIN_FREE_GB_C and d >= common.MIN_FREE_GB
+    return ok, (f"C: {c:.1f} GB free (stop {common.MIN_FREE_GB_C:.0f}), "
+                f"D: {d:.1f} GB free (stop {common.MIN_FREE_GB:.0f})"), {
+        "c_free_gb": round(c, 1), "d_free_gb": round(d, 1)}
 
 
 def check_neon():
@@ -133,7 +138,7 @@ def check_neon():
 
 
 CHECKS = [
-    ("Python 3.12", check_python),
+    ("Python 3.12/3.13", check_python),
     ("Packages", check_packages),
     ("CPU", check_cpu),
     ("Power plan / mode", check_power_plan),

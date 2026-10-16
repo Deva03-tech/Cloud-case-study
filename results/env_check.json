@@ -1,19 +1,20 @@
 {
   "meta": {
     "name": "env_check",
-    "git_commit": "db84c9c26c11a2081e48df223e3760b968bd94b8",
+    "git_commit": "aee62b5bb87b543b3f292a78fc236a0cf0eda676-dirty",
     "host": {
-      "hostname": "Devaashish",
+      "host": "Dell G15",
+      "hostname": "DESKTOP-9RMGOEA",
       "os": "Windows-11-10.0.26200-SP0",
-      "python": "3.12.5",
-      "cpu": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
-      "logical_cpus": 14
+      "python": "3.13.7",
+      "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+      "logical_cpus": 16
     },
-    "utc": "2026-10-15T19:24:43+00:00",
-    "ist": "2026-10-16T00:54:43+05:30",
+    "utc": "2026-10-16T05:19:42+00:00",
+    "ist": "2026-10-16T10:49:42+05:30",
     "settings": {
       "checks": [
-        "Python 3.12",
+        "Python 3.12/3.13",
         "Packages",
         "CPU",
         "Power plan / mode",
@@ -26,11 +27,11 @@
     }
   },
   "data": {
-    "Python 3.12": {
+    "Python 3.12/3.13": {
       "pass": true,
-      "detail": "3.12.5",
-      "python": "3.12.5",
-      "executable": "C:\\dev\\cloud-paper\\.venv\\Scripts\\python.exe"
+      "detail": "3.13.7",
+      "python": "3.13.7",
+      "executable": "D:\\venvs\\cloud-case-study\\Scripts\\python.exe"
     },
     "Packages": {
       "pass": true,
@@ -51,42 +52,44 @@
     },
     "CPU": {
       "pass": true,
-      "detail": "Intel(R) Core(TM) Ultra 7 155U (12C/14T)",
-      "Name": "Intel(R) Core(TM) Ultra 7 155U",
-      "NumberOfCores": 12,
-      "NumberOfLogicalProcessors": 14
+      "detail": "13th Gen Intel(R) Core(TM) i5-13450HX (10C/16T)",
+      "Name": "13th Gen Intel(R) Core(TM) i5-13450HX",
+      "NumberOfCores": 10,
+      "NumberOfLogicalProcessors": 16
     },
     "Power plan / mode": {
-      "pass": false,
-      "detail": "Balanced; power mode AC=Best power efficiency, DC=Best performance",
-      "scheme": "Power Scheme GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (Balanced)",
-      "overlay_ac": "Best power efficiency",
-      "overlay_dc": "Best performance"
+      "pass": true,
+      "detail": "High performance; power mode AC=Best performance, DC=Balanced",
+      "scheme": "Power Scheme GUID: b535bd1d-1207-40aa-a421-da79d6327e00  (High performance)",
+      "overlay_ac": "Best performance",
+      "overlay_dc": "Balanced"
     },
     "AC power": {
-      "pass": false,
-      "detail": "NO (on battery), charge 84%",
-      "BatteryStatus": 1,
-      "EstimatedChargeRemaining": 84
+      "pass": true,
+      "detail": "yes, charge 95%",
+      "BatteryStatus": 2,
+      "EstimatedChargeRemaining": 95
     },
     ".wslconfig": {
       "pass": true,
-      "detail": "memory=20GB, processors=12, swap=4GB",
-      "memory": "20GB",
-      "processors": "12",
-      "swap": "4GB"
+      "detail": "memory=9GB, processors=16, swap=4GB",
+      "memory": "9GB",
+      "processors": "16",
+      "swap": "4GB",
+      "swapFile": "D:\\\\wsl\\\\swap.vhdx"
     },
     "Docker / WSL2": {
       "pass": true,
-      "detail": "server 29.5.3; WSL2 sees 12 CPUs, 19.5 GB",
-      "server_version": "29.5.3",
-      "ncpu": 12,
-      "mem_gb": 19.53
+      "detail": "server 29.8.2; WSL2 sees 16 CPUs, 8.7 GB",
+      "server_version": "29.8.2",
+      "ncpu": 16,
+      "mem_gb": 8.73
     },
     "Disk": {
       "pass": true,
-      "detail": "C: 461.8 GB free (stop line 60)",
-      "c_free_gb": 461.8
+      "detail": "C: 12.9 GB free (stop 3), D: 77.6 GB free (stop 20)",
+      "c_free_gb": 12.9,
+      "d_free_gb": 77.6
     },
     "Neon": {
       "pass": false,

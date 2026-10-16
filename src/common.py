@@ -21,7 +21,11 @@ LOGS_DIR = REPO_ROOT / "logs"
 STATUS_PATH = REPO_ROOT / "STATUS.md"
 LOCK_PATH = LOGS_DIR / "exclusive.lock"
 IST = timezone(timedelta(hours=5, minutes=30), "IST")
-MIN_FREE_GB = 60.0
+# Dell G15: C: is small (~13 GB free), so data, Docker disk and venv live on D:.
+DATA_DRIVE = "D:\\"
+MIN_FREE_GB = 20.0      # stop line on DATA_DRIVE
+MIN_FREE_GB_C = 3.0     # stop line on C: (system drive)
+HOST_LABEL = os.environ.get("CLOUDPAPER_HOST", "Dell G15")
 
 
 # --- .env -------------------------------------------------------------------
@@ -65,6 +69,7 @@ def git_commit() -> str:
 
 def host_info() -> dict:
     return {
+        "host": HOST_LABEL,
         "hostname": platform.node(),
         "os": platform.platform(),
         "python": sys.version.split()[0],
@@ -177,11 +182,11 @@ class DiskSpaceError(RuntimeError):
     pass
 
 
-def free_gb(path: str | Path = "C:\\") -> float:
+def free_gb(path: str | Path = DATA_DRIVE) -> float:
     return shutil.disk_usage(path).free / 1024**3
 
 
-def check_free_space(path: str | Path = "C:\\", min_gb: float = MIN_FREE_GB) -> float:
+def check_free_space(path: str | Path = DATA_DRIVE, min_gb: float = MIN_FREE_GB) -> float:
     """Return free GB; raise DiskSpaceError if below min_gb (DECISIONS L stop line)."""
     free = free_gb(path)
     if free < min_gb:

@@ -117,3 +117,17 @@ Time-box rule: a task past its budget saves partial results, marks itself "parti
 - 2026-10-16 00:36 IST · Cold run = docker stop + drop WSL2 VM page cache (privileged alpine:3.20, echo 3 > /proc/sys/vm/drop_caches) + docker start · Clears both shared_buffers and the OS cache; the VM-wide cache drop is safe because only one size runs at a time.
 - 2026-10-16 00:53 IST · Docker image pinned to postgres:16.15 (digest sha256:ca0bd484…b641d), PG_VERSION 16.15-1.pgdg13+2 · Latest 16.x on 2026-10-16; digest recorded in configs/docker.yaml and results/docker_smoke.json.
 - 2026-10-16 00:53 IST · .env copied from the OneDrive folder into the repo with cp (not opened) but it is 0 bytes there too; owner asked to save it. Step 7 waits on it · Owner instruction: never open or print .env.
+
+### Dell G15 takeover (2026-10-16, new machine)
+- 2026-10-16 10:47 IST · Work moved to a Dell G15 5530 (i5-13450HX 10C/16T: 6P+4E, 15.7 GB RAM, RTX 3050 unused, Windows 11 build 26200); spec in results/machine_dell.json · Owner instruction. HP numbers no longer comparable.
+- 2026-10-16 10:47 IST · All HP measurements moved to results/hp_bootstrap/ (docker_smoke, load_docker_sf0.1, env_check, tpch_sf0.1_gen, redset_fetch) and are NOT used in the paper · Owner rule; tpch_gen and redset_fetch moved too because they also record the HP as host.
+- 2026-10-16 10:50 IST · Repo cloned to D:\dev\Cloud-case-study, venv D:\venvs\cloud-case-study, pip cache and TEMP on D:, Docker Desktop disk already at D:\docker-data, WSL swap at D:\wsl\swap.vhdx · C: has only ~13 GB free; owner asked to use D:.
+- 2026-10-16 10:50 IST · Disk stop lines: D: < 20 GB, C: < 3 GB (was C: < 60 GB) · The 60 GB line cannot hold on this machine's C:; data lives on D:.
+- 2026-10-16 10:52 IST · .wslconfig: memory=9GB (15.69 GB − 6 GB, rounded down), processors=16, swap=4GB · Owner rule for this machine.
+- 2026-10-16 10:52 IST · RAM < 20 GB, so Docker sizes are s1/s2/s4 = 1/2/4 vCPU with 2/3/5 GB (shared_buffers 25%: 512MB/768MB/1280MB), was 2/4/8 GB · Owner rule; s4 at 8 GB would not fit in the 9 GB WSL VM.
+- 2026-10-16 10:53 IST · Power: High performance plan (duplicated from the built-in template) active, AC sleep/hibernate/monitor off, lid action none on AC, power-mode overlay Best performance · Owner rule.
+- 2026-10-16 10:55 IST · Python 3.13.7 instead of 3.12.5; same pinned requirements.txt (all have cp313 wheels) · 3.12 not installed on the Dell; installing it would cost Tier 0 time. env_check accepts 3.12 or 3.13.
+- 2026-10-16 10:58 IST · Result meta now carries host = "Dell G15" (src/common.HOST_LABEL) next to hostname, git commit, UTC and IST · Owner rule: every result file records the host.
+- 2026-10-16 10:59 IST · gen_tpch.py falls back to INSTALL tpch FROM 'https://extensions.duckdb.org' · The default http:// extension URL returns HTTP 307 that DuckDB does not follow on this network.
+- 2026-10-16 10:59 IST · Commits on the Dell use its existing git identity (Harshith Akella) · The HP's identity belongs to another person; not impersonated.
+- 2026-10-16 10:59 IST · PHASE1_REPORT.md named in the takeover prompt does not exist in the repo at aee62b5 · Read HANDOVER, DECISIONS, STATUS instead.

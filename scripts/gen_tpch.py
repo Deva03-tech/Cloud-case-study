@@ -30,7 +30,10 @@ def main() -> int:
     qdir.mkdir(parents=True, exist_ok=True)
 
     con = duckdb.connect()
-    con.execute("INSTALL tpch; LOAD tpch;")
+    try:
+        con.execute("INSTALL tpch; LOAD tpch;")
+    except duckdb.HTTPException:  # Dell G15: http:// repo answers 307; use https directly
+        con.execute("INSTALL tpch FROM 'https://extensions.duckdb.org'; LOAD tpch;")
     with common.timed() as t_gen:
         con.execute(f"CALL dbgen(sf={args.sf})")
     rows, sizes = {}, {}

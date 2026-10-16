@@ -10,6 +10,7 @@ database: tpch
 # One size at a time. --cpus quota only, no --cpuset-cpus (hybrid CPU, DECISIONS C).
 # shared_buffers = 25% of memory.
 sizes:
+# Dell G15 (15.7 GB RAM < 20 GB): 2/3/5 GB instead of 2/4/8 GB (DECISIONS, 2026-10-16).
   s1: {cpus: 1, memory_gb: 2, shared_buffers: 512MB}
-  s2: {cpus: 2, memory_gb: 4, shared_buffers: 1GB}
-  s4: {cpus: 4, memory_gb: 8, shared_buffers: 2GB}
+  s2: {cpus: 2, memory_gb: 3, shared_buffers: 768MB}
+  s4: {cpus: 4, memory_gb: 5, shared_buffers: 1280MB}

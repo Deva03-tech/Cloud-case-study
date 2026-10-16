@@ -1,30 +1,23 @@
-Next check-in: as soon as .env is saved; Phase 1 report ~15 min after
+Next check-in: 11:30 IST (Tier 1 report)
 
 # STATUS
 
-Phase 1 (bootstrap). Times are IST (UTC+05:30), 2026-10-16.
+Dell G15 takeover, 2026-10-16. Times IST (UTC+05:30). Deadline 12:47 IST; Tier 5 starts by 12:32.
+Phase 1 (HP) history: see git log at aee62b5; HP results in results/hp_bootstrap/ (not used).
 
 | # | Task | Status | Start | ETA | Finished |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Repo hygiene and layout | done | 00:21 | 00:31 | 00:24 |
-| 2 | Python venv, requirements, .wslconfig | done (WSL/Docker restart pending) | 00:25 | 00:37 | 00:30 |
-| 3 | Power settings, src/common.py | done (owner: plug in, set Power mode Best performance) | 00:30 | 00:46 | 00:32 |
-| 4 | scripts/env_check.py | re-run 00:54: 6/9 pass (on battery 84%, AC power mode, Neon .env) | 00:32 | 00:42 | 00:32 |
-| 5 | TPC-H data, schema, loader | done (load to Docker/Neon in steps 6/7) | 00:32 | 00:48 | 00:34 |
-| 6 | Docker PostgreSQL sizes + Q6 smoke test | done (Q6 warm 0.169/0.099/0.064 s at 1/2/4 vCPU) | 00:36 | 01:07 | 00:53 |
-| 7 | Neon smoke test | script ready; blocked: .env is 0 bytes (unsaved) | 00:53 |  |  |
-| 8 | Redset download (background) | done (307.7 MB, 1.5 min) | 00:34 | 00:38 | 00:36 |
-| 9 | tests/ + commit | done (15 passed) | 00:35 | 00:43 | 00:35 |
+| T0 | Dell setup: machine spec, .wslconfig, power, env_check | done (8/9; Neon waits on .env) | 10:47 | 11:05 | 11:00 |
+| T1 | TPC-H SF0.1 + Docker calibration (+ Neon if .env) | running | 11:00 | 11:30 |  |
+| T2 | Simulator, cost model, policies, tests, sweep launch | pending |  | 12:05 |  |
+| T3 | Validation replay | pending |  | 12:15 |  |
+| T4 | Stats, Redset, figures | pending |  | 12:30 |  |
+| T5 | RESULTS.md, release | pending |  | 12:45 |  |
 
 ## Errors and blockers
 
-- `.env` exists but is 0 bytes (00:52); owner asked to save it. Blocks step 7.
-- 00:54: Windows reports on battery (84%, was 100% at 00:32) and AC power mode = Best power efficiency, despite owner saying plugged in + Best performance.
-
-## Free-tier usage
-
-- Neon CU-hours: not measured yet
+- .env not present on the Dell yet (asked owner at 10:58). Neon checks fail until then.
 
 ## Free disk space
 
-- C: 461.0 GB free at 00:32 (stop line 60 GB)
+- C: 12.9 GB, D: 77.6 GB free at 10:58 (stop lines C: 3 GB, D: 20 GB)

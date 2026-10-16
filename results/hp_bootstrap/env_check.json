@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "name": "env_check",
+    "git_commit": "db84c9c26c11a2081e48df223e3760b968bd94b8",
+    "host": {
+      "hostname": "Devaashish",
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.12.5",
+      "cpu": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+      "logical_cpus": 14
+    },
+    "utc": "2026-10-15T19:24:43+00:00",
+    "ist": "2026-10-16T00:54:43+05:30",
+    "settings": {
+      "checks": [
+        "Python 3.12",
+        "Packages",
+        "CPU",
+        "Power plan / mode",
+        "AC power",
+        ".wslconfig",
+        "Docker / WSL2",
+        "Disk",
+        "Neon"
+      ]
+    }
+  },
+  "data": {
+    "Python 3.12": {
+      "pass": true,
+      "detail": "3.12.5",
+      "python": "3.12.5",
+      "executable": "C:\\dev\\cloud-paper\\.venv\\Scripts\\python.exe"
+    },
+    "Packages": {
+      "pass": true,
+      "detail": "all present",
+      "psycopg": "3.3.6",
+      "duckdb": "1.5.6",
+      "pandas": "3.0.6",
+      "pyarrow": "26.0.0",
+      "numpy": "2.5.4",
+      "scipy": "1.18.1",
+      "simpy": "4.1.2",
+      "matplotlib": "3.11.2",
+      "requests": "2.34.2",
+      "python-dotenv": "1.2.4",
+      "PyYAML": "6.0.3",
+      "pytest": "9.1.1",
+      "detect-secrets": "1.5.0"
+    },
+    "CPU": {
+      "pass": true,
+      "detail": "Intel(R) Core(TM) Ultra 7 155U (12C/14T)",
+      "Name": "Intel(R) Core(TM) Ultra 7 155U",
+      "NumberOfCores": 12,
+      "NumberOfLogicalProcessors": 14
+    },
+    "Power plan / mode": {
+      "pass": false,
+      "detail": "Balanced; power mode AC=Best power efficiency, DC=Best performance",
+      "scheme": "Power Scheme GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (Balanced)",
+      "overlay_ac": "Best power efficiency",
+      "overlay_dc": "Best performance"
+    },
+    "AC power": {
+      "pass": false,
+      "detail": "NO (on battery), charge 84%",
+      "BatteryStatus": 1,
+      "EstimatedChargeRemaining": 84
+    },
+    ".wslconfig": {
+      "pass": true,
+      "detail": "memory=20GB, processors=12, swap=4GB",
+      "memory": "20GB",
+      "processors": "12",
+      "swap": "4GB"
+    },
+    "Docker / WSL2": {
+      "pass": true,
+      "detail": "server 29.5.3; WSL2 sees 12 CPUs, 19.5 GB",
+      "server_version": "29.5.3",
+      "ncpu": 12,
+      "mem_gb": 19.53
+    },
+    "Disk": {
+      "pass": true,
+      "detail": "C: 461.8 GB free (stop line 60)",
+      "c_free_gb": 461.8
+    },
+    "Neon": {
+      "pass": false,
+      "detail": "no .env / missing in .env: NEON_DSN"
+    }
+  }
+}

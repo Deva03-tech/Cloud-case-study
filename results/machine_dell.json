@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "name": "machine_dell",
+    "git_commit": "aee62b5bb87b543b3f292a78fc236a0cf0eda676-dirty",
+    "host": {
+      "host": "Dell G15",
+      "hostname": "DESKTOP-9RMGOEA",
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.13.7",
+      "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+      "logical_cpus": 16
+    },
+    "utc": "2026-10-16T05:19:31+00:00",
+    "ist": "2026-10-16T10:49:31+05:30",
+    "settings": {}
+  },
+  "data": {
+    "machine": "Dell Inc. Dell G15 5530",
+    "cpu": "13th Gen Intel(R) Core(TM) i5-13450HX",
+    "cores": 10,
+    "threads": 16,
+    "max_clock_mhz": 2400,
+    "ram_gb": 15.69,
+    "gpu": [
+      "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+      "Intel(R) UHD Graphics"
+    ],
+    "windows": "Microsoft Windows 11 Home Single Language",
+    "windows_version": "10.0.26200",
+    "windows_build": "26200",
+    "drives": [
+      {
+        "Name": "C",
+        "free_gb": 12.9,
+        "used_gb": 255.7
+      },
+      {
+        "Name": "D",
+        "free_gb": 77.6,
+        "used_gb": 26.3
+      }
+    ],
+    "note": "i5-13450HX is hybrid: 6 P-cores (12 threads) + 4 E-cores (4 threads)"
+  }
+}
