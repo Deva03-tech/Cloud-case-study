@@ -1,0 +1,245 @@
+{
+  "meta": {
+    "name": "redset_overload_check",
+    "git_commit": "bce5431638c29662873b1f0dfdbcd16e12b3d7a8-dirty",
+    "host": {
+      "host": "Dell G15",
+      "hostname": "DESKTOP-9RMGOEA",
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.13.7",
+      "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+      "logical_cpus": 16
+    },
+    "utc": "2026-10-16T05:58:03+00:00",
+    "ist": "2026-10-16T11:28:03+05:30",
+    "settings": {
+      "sources": [
+        "results/redset_trace.json",
+        "results/calib_docker.json",
+        "results/redset_sweep.parquet"
+      ],
+      "model": "sim v1 servers k = round(c); fluid backlog per hour"
+    }
+  },
+  "data": {
+    "p_mean_size_vcpu": 1.0,
+    "servers_k": 1,
+    "mean_service_s": 0.10055375000000001,
+    "capacity_qps": 9.944929950399661,
+    "day_mean_rate_qps": 0.33119212962962963,
+    "rho_day_mean": 0.033302610604745375,
+    "peak_hour": 22,
+    "rho_peak_hour": 0.7993,
+    "hours_with_rho_gt_1": [],
+    "queue_unbounded_during_peak_hour_avg": false,
+    "minute_resolution": {
+      "rho_max_minute": 3.0400750416666673,
+      "minutes_with_rho_gt_1": 21,
+      "busiest_minute_arrivals": 1814,
+      "fluid_backlog_max_queries_minute_res": 14344.0,
+      "fluid_backlog_max_drain_s": 1442.3
+    },
+    "queue_unbounded_during_overload_minutes": true,
+    "fluid_backlog_max": 0.0,
+    "per_hour": [
+      {
+        "hour": 0,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 1,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 2,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 3,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 4,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 5,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 6,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 7,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 8,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 9,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 10,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 11,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 12,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 13,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 14,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 15,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 16,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 17,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 18,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 19,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 20,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 21,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 22,
+        "arrivals": 28615,
+        "rate_qps": 7.9486,
+        "rho": 0.7993,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      },
+      {
+        "hour": 23,
+        "arrivals": 0,
+        "rate_qps": 0.0,
+        "rho": 0.0,
+        "unbounded_in_hour": false,
+        "fluid_backlog_end_of_hour": 0.0
+      }
+    ],
+    "sim_v1_p_mean": {
+      "p95_s_mean": 1416.9297698885375,
+      "p99_s_mean": 1495.5243829784079,
+      "n_unfinished_mean": 0.0
+    },
+    "interpretation": "P-mean is sized on the day-mean rate (rho <= 0.7 rule). Hourly averages stay below rho = 1, but in minutes with rho > 1 the queue grows without bound until load drops; the drain time of that backlog, not service time, sets its p95."
+  }
+}

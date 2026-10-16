@@ -78,3 +78,26 @@ def test_cost_model():
         cost.cost_usd(-1, "rds_postgresql")
     for m in ("aurora_serverless_v2", "neon_launch", "rds_postgresql"):
         assert all(s["url"].startswith("https://") and s["accessed"] for s in cost.prices()[m]["sources"])
+
+
+def test_v2_contention_slows_under_load_and_v1_unchanged(sm):
+    wl = Workload(rate_qps=8, burst_s=120, gap_s=60, horizon_s=600, first_burst_s=0)
+    p = Policy("P", "provisioned", size=2.0)
+    v1a = simulate(p, wl, sm, 3)
+    v1b = simulate(p, wl, sm, 3, contention=None)
+    assert v1a == v1b and v1a["sim_version"] == "v1" and v1a["cpu_s"] == v1a["busy_server_s"]
+    v2 = simulate(p, wl, sm, 3, contention={"a": 1.0, "cpu_per_base": 1.5, "max_conc": 32})
+    assert v2["sim_version"] == "v2"
+    assert v2["p95_s"] > v1a["p95_s"]
+    no = simulate(p, wl, sm, 3, contention={"a": 0.0, "cpu_per_base": 1.0, "max_conc": 32})
+    assert no["cpu_s"] == pytest.approx(v1a["cpu_s"], rel=0.2)
+
+
+def test_v2_slowdown_factor_is_exact_for_single_query(sm):
+    wl = Workload(rate_qps=0.001, burst_s=1, gap_s=10, horizon_s=20, first_burst_s=0)
+    tr = [(1.0, "q06")]
+    v2 = simulate(Policy("P", "provisioned", size=1.0), wl, sm, 0, trace=tr,
+                  contention={"a": 3.0, "cpu_per_base": 2.0, "max_conc": 8})
+    v1 = simulate(Policy("P", "provisioned", size=1.0), wl, sm, 0, trace=tr)
+    assert v2["p50_s"] == pytest.approx(3.0 * v1["p50_s"])
+    assert v2["cpu_s"] == pytest.approx(2.0 * v1["cpu_s"])

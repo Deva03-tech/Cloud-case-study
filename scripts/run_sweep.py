@@ -8,6 +8,9 @@ runs are kept in the parquet with aux=True.
 Outputs: results/sweep.parquet (one row per run), results/sweep.json (meta, settings,
 targets, tuned tau per cell), results/sweep_latency_seed0.parquet (all latencies, seed 0).
   python scripts/run_sweep.py [--seeds 10] [--workers 14]
+  python scripts/run_sweep.py --sim v2 --seeds 20 --select-seeds 10   # Tier 6E -> *_v2 files
+With --select-seeds N, S-tuned's tau is chosen on seeds < N ("select") and every policy is
+scored on seeds >= N ("eval", held out); the summary uses the eval rows only.
 """
 from __future__ import annotations
 
@@ -24,7 +27,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src import common, cost  # noqa: E402
-from src.sim import Policy, ServiceModel, Workload, simulate, standard_policies, with_tau  # noqa: E402
+from src.sim import Policy, ServiceModel, Workload, load_contention, simulate, standard_policies, with_tau  # noqa: E402
 
 RATES = {"low": 1.0, "mid": 4.0, "high": 12.0}
 GAPS = {"short": 180.0, "long": 1200.0}
@@ -32,6 +35,7 @@ TAUS = [60.0, 120.0, 300.0, 600.0, 1800.0]
 BURST_S, HORIZON_S = 300.0, 10800.0
 
 _SM: ServiceModel | None = None
+_CONT: dict | None = None
 
 
 def p95_target(sm: ServiceModel) -> tuple[float, float]:
@@ -41,15 +45,16 @@ def p95_target(sm: ServiceModel) -> tuple[float, float]:
     return p95, 2 * p95
 
 
-def _init():
-    global _SM
+def _init(cont=None):
+    global _SM, _CONT
     _SM = ServiceModel.from_file()
+    _CONT = cont
 
 
 def _run(job):
     cell, wl, pol, seed, aux = job
     keep = seed == 0 and not aux
-    r = simulate(pol, wl, _SM, seed, keep_latencies=keep)
+    r = simulate(pol, wl, _SM, seed, keep_latencies=keep, contention=_CONT)
     lat = r.pop("latencies", None)
     c = cost.cost_usd(r["compute_vcpu_s"], pol.price_model)
     row = {**cell, "policy": pol.name, "kind": pol.kind, "seed": seed, "aux": aux,
@@ -67,7 +72,12 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--seeds", type=int, default=10)
     ap.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 2))
+    ap.add_argument("--sim", choices=["v1", "v2"], default="v1")
+    ap.add_argument("--select-seeds", type=int, default=None)
     args = ap.parse_args()
+    sfx = "" if args.sim == "v1" else "_v2"
+    cont = load_contention("s2") if args.sim == "v2" else None
+    sel_n = args.select_seeds
     common.check_free_space()
     sm = ServiceModel.from_file()
     p95_t, p99_t = p95_target(sm)
@@ -84,16 +94,18 @@ def main() -> int:
                 for seed in range(args.seeds):
                     jobs.append((cell, wl, p, seed, aux))
     t0 = time.perf_counter()
-    with common.awake(), Pool(args.workers, initializer=_init) as pool:
+    with common.awake(), Pool(args.workers, initializer=_init, initargs=(cont,)) as pool:
         res = pool.map(_run, jobs, chunksize=4)
     elapsed = time.perf_counter() - t0
     df = pd.DataFrame([r for r, _ in res])
+    df["split"] = "all" if sel_n is None else np.where(df.seed < sel_n, "select", "eval")
 
     # S-tuned: select tau per cell, copy those runs as policy "S-tuned"
     tuned, cand_names = {}, {300.0: "S-default", **{t: f"S-tau{int(t)}" for t in TAUS if t != 300.0}}
     extra = []
     for (rn, gn), g in df.groupby(["intensity", "gap"]):
-        stats = {t: g[g.policy == n][["p95_s", "cost_usd"]].mean() for t, n in cand_names.items()}
+        gs = g if sel_n is None else g[g.split == "select"]
+        stats = {t: gs[gs.policy == n][["p95_s", "cost_usd"]].mean() for t, n in cand_names.items()}
         ok = [t for t, s in stats.items() if s.p95_s <= p95_t]
         best = min(ok, key=lambda t: stats[t].cost_usd) if ok else min(stats, key=lambda t: stats[t].p95_s)
         tuned[f"{rn}/{gn}"] = {"tau_s": best, "meets_target": bool(ok)}
@@ -103,7 +115,7 @@ def main() -> int:
     df = pd.concat([df, *extra], ignore_index=True)
     df["meets_p95"] = df.p95_s <= p95_t
     df["meets_p99"] = df.p99_s <= p99_t
-    out = common.RESULTS_DIR / "sweep.parquet"
+    out = common.RESULTS_DIR / f"sweep{sfx}.parquet"
     df.to_parquet(out, index=False)
 
     lat_rows = []
@@ -112,13 +124,14 @@ def main() -> int:
             lat_rows.append(pd.DataFrame({"intensity": row["intensity"], "gap": row["gap"],
                                           "policy": row["policy"],
                                           "latency_s": np.asarray(lat, dtype=np.float32)}))
-    pd.concat(lat_rows).to_parquet(common.RESULTS_DIR / "sweep_latency_seed0.parquet", index=False)
+    pd.concat(lat_rows).to_parquet(common.RESULTS_DIR / f"sweep_latency_seed0{sfx}.parquet", index=False)
 
-    main_df = df[~df.aux]
-    common.write_result("sweep", {
+    main_df = df[~df.aux] if sel_n is None else df[~df.aux & (df.split == "eval")]
+    common.write_result(f"sweep{sfx}", {
         "runs_total": len(res), "rows_main": len(main_df), "elapsed_s": round(elapsed, 1),
         "p95_target_s": p95_t, "p99_target_s": p99_t, "tuned_tau": tuned,
-        "files": ["results/sweep.parquet", "results/sweep_latency_seed0.parquet"],
+        "files": [f"results/sweep{sfx}.parquet", f"results/sweep_latency_seed0{sfx}.parquet"],
+        "sim_version": args.sim, "contention": cont, "select_seeds": sel_n,
         "summary_mean": main_df.groupby(["intensity", "gap", "policy"])[
             ["p95_s", "p99_s", "compute_vcpu_s", "cost_per_1k_usd", "cold_starts"]].mean()
             .round(4).reset_index().to_dict(orient="records"),

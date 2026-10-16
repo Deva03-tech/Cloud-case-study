@@ -163,6 +163,7 @@ class _State:
     queue: deque = field(default_factory=deque)
     billed: float = 0.0              # vCPU-seconds
     busy_s: float = 0.0              # server-seconds actually serving
+    cpu_s: float = 0.0               # v1: = busy_s; v2: base * cpu_per_base
     last_t: float = 0.0
     idle_since: float | None = 0.0
     resume_ev: object = None
@@ -175,8 +176,16 @@ class _State:
 
 def simulate(policy: Policy, wl: Workload, sm: ServiceModel, seed: int,
              rtt_s: float = 0.0, keep_latencies: bool = False,
-             trace: list[tuple[float, str]] | None = None) -> dict:
-    """trace: fixed (time, query) arrivals (validation replay); default draws from wl."""
+             trace: list[tuple[float, str]] | None = None,
+             contention: dict | None = None) -> dict:
+    """trace: fixed (time, query) arrivals (validation replay); default draws from wl.
+
+    contention=None is sim v1 (FIFO, k = round(c) servers, CPU = busy server-seconds).
+    contention={"a", "cpu_per_base", "max_conc"} is sim v2: up to max_conc queries run at
+    once (client connection limit); a query starting with `active` queries in service
+    (itself included) takes base * max(1, a * active / c), the slowdown fixed at its start;
+    CPU-seconds = sum(base * cpu_per_base). Parameters from results/calib_contention.json.
+    """
     rng = np.random.default_rng(seed)
     arr = trace if trace is not None else arrivals(wl, sm.queries, np.random.default_rng(seed + 10_000))
     env = simpy.Environment()
@@ -198,6 +207,8 @@ def simulate(policy: Policy, wl: Workload, sm: ServiceModel, seed: int,
         st.last_t = env.now
 
     def k() -> int:
+        if contention:
+            return int(contention["max_conc"])
         return max(1, round(st.c))
 
     def dispatch():
@@ -212,6 +223,11 @@ def simulate(policy: Policy, wl: Workload, sm: ServiceModel, seed: int,
         cold = q not in st.warm_types
         st.warm_types.add(q)
         s = sm.sample(q, st.c, rng, cold=cold)
+        if contention:
+            st.cpu_s += s * contention["cpu_per_base"]
+            s *= max(1.0, contention["a"] * st.busy / st.c)
+        else:
+            st.cpu_s += s
         st.busy_s += s
         yield env.timeout(s)
         st.busy -= 1
@@ -319,7 +335,8 @@ def simulate(policy: Policy, wl: Workload, sm: ServiceModel, seed: int,
         "n_queries": len(lat), "n_arrivals": len(arr), "n_unfinished": len(arr) - len(lat),
         "p50_s": float(np.percentile(lat_a, 50)), "p95_s": float(np.percentile(lat_a, 95)),
         "p99_s": float(np.percentile(lat_a, 99)), "mean_s": float(np.mean(lat_a)),
-        "compute_vcpu_s": billed, "busy_server_s": st.busy_s,
+        "compute_vcpu_s": billed, "busy_server_s": st.busy_s, "cpu_s": st.cpu_s,
+        "sim_version": "v2" if contention else "v1",
         "cold_starts": st.cold_starts, "prewarms": st.prewarms,
     }
     if keep_latencies:
@@ -329,3 +346,14 @@ def simulate(policy: Policy, wl: Workload, sm: ServiceModel, seed: int,
 
 def with_tau(p: Policy, tau_s: float, name: str | None = None) -> Policy:
     return replace(p, tau_s=tau_s, name=name or p.name)
+
+
+CONTENTION_PATH = Path(__file__).resolve().parents[1] / "results" / "calib_contention.json"
+
+
+def load_contention(size: str = "s2", max_conc: int = 32, path: Path = CONTENTION_PATH) -> dict:
+    """Sim v2 parameters, read only from results/calib_contention.json."""
+    d = json.loads(path.read_text(encoding="utf-8"))["data"]
+    f = d[size]["fit"] if size in d else next(iter(d.values()))["fit"]
+    return {"a": f["a"], "cpu_per_base": f["cpu_per_base"], "max_conc": max_conc, "fit_size": size,
+            "r2": f["r2"]}
