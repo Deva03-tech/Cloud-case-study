@@ -1,0 +1,621 @@
+{
+  "meta": {
+    "name": "sweep",
+    "git_commit": "7ec54cf39e9fb8b8c913bb8e541b1563cab4c736",
+    "host": {
+      "host": "Dell G15",
+      "hostname": "DESKTOP-9RMGOEA",
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.13.7",
+      "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+      "logical_cpus": 16
+    },
+    "utc": "2026-10-16T05:30:38+00:00",
+    "ist": "2026-10-16T11:00:38+05:30",
+    "settings": {
+      "mode": "Docker-only + modelled serverless (no .env)",
+      "rates_qps": {
+        "low": 1.0,
+        "mid": 4.0,
+        "high": 12.0
+      },
+      "gaps_s": {
+        "short": 180.0,
+        "long": 1200.0
+      },
+      "burst_s": 300.0,
+      "horizon_s": 10800.0,
+      "seeds": 10,
+      "taus_s": [
+        60.0,
+        120.0,
+        300.0,
+        600.0,
+        1800.0
+      ],
+      "policy_params": {
+        "P-peak": {
+          "name": "P-peak",
+          "kind": "provisioned",
+          "size": 4.0,
+          "scheduled": false,
+          "idle_size": 1.0,
+          "tau_s": 300.0,
+          "c_min": 0.25,
+          "c_max": 4.0,
+          "resume_s": 15.0,
+          "d_up_s": 5.0,
+          "cooldown_s": 60.0,
+          "prewarm": false,
+          "prewarm_margin_s": 5.0,
+          "price_model": "rds_postgresql"
+        },
+        "P-mean": {
+          "name": "P-mean",
+          "kind": "provisioned",
+          "size": 1.0,
+          "scheduled": false,
+          "idle_size": 1.0,
+          "tau_s": 300.0,
+          "c_min": 0.25,
+          "c_max": 4.0,
+          "resume_s": 15.0,
+          "d_up_s": 5.0,
+          "cooldown_s": 60.0,
+          "prewarm": false,
+          "prewarm_margin_s": 5.0,
+          "price_model": "rds_postgresql"
+        },
+        "P-sched": {
+          "name": "P-sched",
+          "kind": "provisioned",
+          "size": 4.0,
+          "scheduled": true,
+          "idle_size": 1.0,
+          "tau_s": 300.0,
+          "c_min": 0.25,
+          "c_max": 4.0,
+          "resume_s": 15.0,
+          "d_up_s": 5.0,
+          "cooldown_s": 60.0,
+          "prewarm": false,
+          "prewarm_margin_s": 5.0,
+          "price_model": "rds_postgresql"
+        },
+        "S-default": {
+          "name": "S-default",
+          "kind": "serverless",
+          "size": 4.0,
+          "scheduled": false,
+          "idle_size": 1.0,
+          "tau_s": 300.0,
+          "c_min": 0.25,
+          "c_max": 4.0,
+          "resume_s": 15.0,
+          "d_up_s": 5.0,
+          "cooldown_s": 60.0,
+          "prewarm": false,
+          "prewarm_margin_s": 5.0,
+          "price_model": "aurora_serverless_v2"
+        },
+        "S-floor": {
+          "name": "S-floor",
+          "kind": "serverless",
+          "size": 4.0,
+          "scheduled": false,
+          "idle_size": 1.0,
+          "tau_s": Infinity,
+          "c_min": 0.25,
+          "c_max": 4.0,
+          "resume_s": 15.0,
+          "d_up_s": 5.0,
+          "cooldown_s": 60.0,
+          "prewarm": false,
+          "prewarm_margin_s": 5.0,
+          "price_model": "aurora_serverless_v2"
+        },
+        "S-prewarm": {
+          "name": "S-prewarm",
+          "kind": "serverless",
+          "size": 4.0,
+          "scheduled": false,
+          "idle_size": 1.0,
+          "tau_s": 300.0,
+          "c_min": 0.25,
+          "c_max": 4.0,
+          "resume_s": 15.0,
+          "d_up_s": 5.0,
+          "cooldown_s": 60.0,
+          "prewarm": true,
+          "prewarm_margin_s": 5.0,
+          "price_model": "aurora_serverless_v2"
+        }
+      },
+      "service_model": {
+        "a": {
+          "q01": 0.36836041562219524,
+          "q03": 0.035151945805114215,
+          "q04": 0.08868831752371095,
+          "q05": 0.026578624431540125,
+          "q06": 0.04985697542752232,
+          "q10": 0.07817254184689672,
+          "q12": 0.09141084649605027,
+          "q14": 0.04877067892525114
+        },
+        "b": {
+          "q01": 0.953532219362067,
+          "q03": 0.2699562936725014,
+          "q04": 0.29496904800593277,
+          "q05": 0.29079236750610793,
+          "q06": 0.6750493837892623,
+          "q10": 0.56869511377051,
+          "q12": 0.8808529186410512,
+          "q14": 0.5824270059474453
+        },
+        "calib": "results/calib_docker.json"
+      },
+      "rtt_s": 0.0,
+      "workers": 14,
+      "note": "S-tuned tau selected in-sample on the same 10 seeds; taus < 300 s exceed Aurora's 300 s minimum (Neon Scale allows 60 s)"
+    }
+  },
+  "data": {
+    "runs_total": 600,
+    "rows_main": 420,
+    "elapsed_s": 47.2,
+    "p95_target_s": 0.5,
+    "p99_target_s": 1.0,
+    "tuned_tau": {
+      "high/long": {
+        "tau_s": 1800.0,
+        "meets_target": true
+      },
+      "high/short": {
+        "tau_s": 300.0,
+        "meets_target": true
+      },
+      "low/long": {
+        "tau_s": 1800.0,
+        "meets_target": true
+      },
+      "low/short": {
+        "tau_s": 300.0,
+        "meets_target": true
+      },
+      "mid/long": {
+        "tau_s": 1800.0,
+        "meets_target": true
+      },
+      "mid/short": {
+        "tau_s": 300.0,
+        "meets_target": true
+      }
+    },
+    "files": [
+      "results/sweep.parquet",
+      "results/sweep_latency_seed0.parquet"
+    ],
+    "summary_mean": [
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "P-mean",
+        "p95_s": 61.8166,
+        "p99_s": 69.2862,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.009,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "P-peak",
+        "p95_s": 0.1027,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.0358,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "P-sched",
+        "p95_s": 0.1027,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 17820.0,
+        "cost_per_1k_usd": 0.0148,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "S-default",
+        "p95_s": 9.792,
+        "p99_s": 17.457,
+        "compute_vcpu_s": 8760.2327,
+        "cost_per_1k_usd": 0.0208,
+        "cold_starts": 7.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "S-floor",
+        "p95_s": 0.176,
+        "p99_s": 1.8969,
+        "compute_vcpu_s": 10564.9,
+        "cost_per_1k_usd": 0.025,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "S-prewarm",
+        "p95_s": 0.1856,
+        "p99_s": 4.495,
+        "compute_vcpu_s": 8985.8638,
+        "cost_per_1k_usd": 0.0213,
+        "cold_starts": 1.0
+      },
+      {
+        "intensity": "high",
+        "gap": "long",
+        "policy": "S-tuned",
+        "p95_s": 0.176,
+        "p99_s": 1.8969,
+        "compute_vcpu_s": 10564.9,
+        "cost_per_1k_usd": 0.025,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "P-mean",
+        "p95_s": 0.1853,
+        "p99_s": 0.2187,
+        "compute_vcpu_s": 21600.0,
+        "cost_per_1k_usd": 0.0062,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "P-peak",
+        "p95_s": 0.1027,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.0124,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "P-sched",
+        "p95_s": 0.1027,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 31140.0,
+        "cost_per_1k_usd": 0.0089,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "S-default",
+        "p95_s": 0.1655,
+        "p99_s": 1.4152,
+        "compute_vcpu_s": 26082.7375,
+        "cost_per_1k_usd": 0.0214,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "S-floor",
+        "p95_s": 0.1655,
+        "p99_s": 1.4152,
+        "compute_vcpu_s": 26082.7375,
+        "cost_per_1k_usd": 0.0214,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "S-prewarm",
+        "p95_s": 0.1655,
+        "p99_s": 1.4152,
+        "compute_vcpu_s": 26082.7375,
+        "cost_per_1k_usd": 0.0214,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "high",
+        "gap": "short",
+        "policy": "S-tuned",
+        "p95_s": 0.1655,
+        "p99_s": 1.4152,
+        "compute_vcpu_s": 26082.7375,
+        "cost_per_1k_usd": 0.0214,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "P-mean",
+        "p95_s": 0.3749,
+        "p99_s": 0.4242,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.107,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "P-peak",
+        "p95_s": 0.1033,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.4281,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "P-sched",
+        "p95_s": 0.1033,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 17820.0,
+        "cost_per_1k_usd": 0.1766,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "S-default",
+        "p95_s": 3.0002,
+        "p99_s": 14.3423,
+        "compute_vcpu_s": 4106.3317,
+        "cost_per_1k_usd": 0.1163,
+        "cold_starts": 7.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "S-floor",
+        "p95_s": 0.3737,
+        "p99_s": 0.476,
+        "compute_vcpu_s": 5757.525,
+        "cost_per_1k_usd": 0.163,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "S-prewarm",
+        "p95_s": 0.3764,
+        "p99_s": 1.755,
+        "compute_vcpu_s": 4229.6753,
+        "cost_per_1k_usd": 0.1198,
+        "cold_starts": 1.0
+      },
+      {
+        "intensity": "low",
+        "gap": "long",
+        "policy": "S-tuned",
+        "p95_s": 0.3737,
+        "p99_s": 0.476,
+        "compute_vcpu_s": 5757.525,
+        "cost_per_1k_usd": 0.163,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "P-mean",
+        "p95_s": 0.3749,
+        "p99_s": 0.4235,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.0372,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "P-peak",
+        "p95_s": 0.1015,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.1487,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "P-sched",
+        "p95_s": 0.1015,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 31140.0,
+        "cost_per_1k_usd": 0.1072,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "S-default",
+        "p95_s": 0.3736,
+        "p99_s": 0.4795,
+        "compute_vcpu_s": 11637.225,
+        "cost_per_1k_usd": 0.1144,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "S-floor",
+        "p95_s": 0.3736,
+        "p99_s": 0.4795,
+        "compute_vcpu_s": 11637.225,
+        "cost_per_1k_usd": 0.1144,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "S-prewarm",
+        "p95_s": 0.3736,
+        "p99_s": 0.4795,
+        "compute_vcpu_s": 11637.225,
+        "cost_per_1k_usd": 0.1144,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "low",
+        "gap": "short",
+        "policy": "S-tuned",
+        "p95_s": 0.3736,
+        "p99_s": 0.4795,
+        "compute_vcpu_s": 11637.225,
+        "cost_per_1k_usd": 0.1144,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "P-mean",
+        "p95_s": 0.5027,
+        "p99_s": 0.7767,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.027,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "P-peak",
+        "p95_s": 0.1027,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.108,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "P-sched",
+        "p95_s": 0.1027,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 17820.0,
+        "cost_per_1k_usd": 0.0445,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "S-default",
+        "p95_s": 5.0736,
+        "p99_s": 15.1834,
+        "compute_vcpu_s": 5993.8323,
+        "cost_per_1k_usd": 0.0428,
+        "cold_starts": 7.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "S-floor",
+        "p95_s": 0.1867,
+        "p99_s": 0.4437,
+        "compute_vcpu_s": 7746.05,
+        "cost_per_1k_usd": 0.0553,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "S-prewarm",
+        "p95_s": 0.2003,
+        "p99_s": 1.7573,
+        "compute_vcpu_s": 6183.5006,
+        "cost_per_1k_usd": 0.0441,
+        "cold_starts": 1.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "long",
+        "policy": "S-tuned",
+        "p95_s": 0.1867,
+        "p99_s": 0.4437,
+        "compute_vcpu_s": 7746.05,
+        "cost_per_1k_usd": 0.0553,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "P-mean",
+        "p95_s": 0.5072,
+        "p99_s": 0.7725,
+        "compute_vcpu_s": 10800.0,
+        "cost_per_1k_usd": 0.0093,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "P-peak",
+        "p95_s": 0.1033,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 43200.0,
+        "cost_per_1k_usd": 0.0372,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "P-sched",
+        "p95_s": 0.1033,
+        "p99_s": 0.1199,
+        "compute_vcpu_s": 31140.0,
+        "cost_per_1k_usd": 0.0268,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "S-default",
+        "p95_s": 0.1867,
+        "p99_s": 0.45,
+        "compute_vcpu_s": 17438.2125,
+        "cost_per_1k_usd": 0.0429,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "S-floor",
+        "p95_s": 0.1867,
+        "p99_s": 0.45,
+        "compute_vcpu_s": 17438.2125,
+        "cost_per_1k_usd": 0.0429,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "S-prewarm",
+        "p95_s": 0.1867,
+        "p99_s": 0.45,
+        "compute_vcpu_s": 17438.2125,
+        "cost_per_1k_usd": 0.0429,
+        "cold_starts": 0.0
+      },
+      {
+        "intensity": "mid",
+        "gap": "short",
+        "policy": "S-tuned",
+        "p95_s": 0.1867,
+        "p99_s": 0.45,
+        "compute_vcpu_s": 17438.2125,
+        "cost_per_1k_usd": 0.0429,
+        "cold_starts": 0.0
+      }
+    ]
+  }
+}
